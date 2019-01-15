@@ -12,7 +12,13 @@ ADD_LIBRARY(CAntlr4
         antlr4/antlr4.h
         antlr4/antlr4.c
         antlr4/memory/pool.c
-        antlr4/memory/pool.h)
+        antlr4/memory/pool.h
+        antlr4/atn/atn.c
+        antlr4/atn/atn.h
+        antlr4/atn/atn_config.c
+        antlr4/atn/atn_config.h
+        antlr4/dfa/dfa.c
+        antlr4/dfa/dfa.h)
 ADD_SANITIZERS(CAntlr4)
 
 ADD_EXECUTABLE(Test
