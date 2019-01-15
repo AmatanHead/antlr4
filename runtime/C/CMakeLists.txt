@@ -10,7 +10,9 @@ FIND_PACKAGE(Sanitizers)
 
 ADD_LIBRARY(CAntlr4
         antlr4/antlr4.h
-        antlr4/antlr4.c)
+        antlr4/antlr4.c
+        antlr4/memory/pool.c
+        antlr4/memory/pool.h)
 ADD_SANITIZERS(CAntlr4)
 
 ADD_EXECUTABLE(Test
