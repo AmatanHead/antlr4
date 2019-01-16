@@ -5,7 +5,6 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
-HEADER_BEGIN
 
 /**
  * Note: this pool is not thread safe.
@@ -72,4 +71,3 @@ void* A4_MemoryPool_MallocAligned(struct A4_MemoryPool* pool, size_t size, size_
 /// Allocate object of the given type.
 #define A4_POOL_ALLOC(pool, T) (T*)A4_MemoryPool_MallocAligned((pool), sizeof(T), alignof(T));
 
-HEADER_END

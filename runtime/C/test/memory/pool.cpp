@@ -1,6 +1,8 @@
 #include <gtest/gtest.h>
 
+extern "C" {
 #include <antlr4/memory/pool.h>
+}
 
 #define CHECK_POOL(allocated, left, waste)               \
     ASSERT_EQ(allocated, A4_MemoryPool_Allocated(pool)); \
