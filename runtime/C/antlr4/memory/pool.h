@@ -7,6 +7,8 @@
 
 
 /**
+ * Memory pool is used to optimize memory allocation and garbage collection.
+ *
  * Note: this pool is not thread safe.
  */
 struct A4_MemoryPool;
@@ -32,7 +34,7 @@ struct A4_MemoryPool_Options {
 };
 
 /// Construct default options for memory pool init.
-inline struct A4_MemoryPool_Options A4_MemoryPool_Options_Default() {
+inline struct A4_MemoryPool_Options A4_MemoryPool_Options_Default(void) {
     return (struct A4_MemoryPool_Options) {
         .page_size = 2048,
         .growth_strategy = A4_GS_EXPONENT
@@ -45,7 +47,9 @@ inline struct A4_MemoryPool_Options A4_MemoryPool_Options_Default() {
 
 /// Allocate and init new memory pool.
 struct A4_MemoryPool* A4_MemoryPool_New(struct A4_MemoryPool_Options options);
-inline struct A4_MemoryPool* A4_MemoryPool_NewDefault() { return A4_MemoryPool_New(A4_MemoryPool_Options_Default()); }
+inline struct A4_MemoryPool* A4_MemoryPool_NewDefault(void) {
+    return A4_MemoryPool_New(A4_MemoryPool_Options_Default());
+}
 
 /// Delete memory pool and free all its memory.
 void A4_MemoryPool_Delete(struct A4_MemoryPool* pool);
