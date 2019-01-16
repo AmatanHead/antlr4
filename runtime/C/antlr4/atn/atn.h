@@ -3,6 +3,7 @@
 #include "../memory/pool.h"
 #include "../util/intset.h"
 #include "../util/one_of.h"
+#include "../common.h"
 
 #include <assert.h>
 #include <stdbool.h>
@@ -200,30 +201,20 @@ struct A4_ATNLoopEndState {
     struct A4_ATNState* loopback_state;
 };
 
-// Safe (well, as safe as you can get in C) function to perform downcasts on state struct.
-
-#define A4_DOWNCAST_FUNC(T, ...)                                                                                    \
-static inline struct A4_ATN##T* A4_To##T(struct A4_ATNState* ptr) {                                                 \
-    if (ptr) assert(A4_OneOf(ptr->type, (int[]){ __VA_ARGS__ }, sizeof((int[]){ __VA_ARGS__ }) / sizeof(int)));     \
-    return (struct A4_ATN##T*)(ptr);                                                                                \
-}
-
-A4_DOWNCAST_FUNC(BasicState, A4_ATNST_BASIC)
-A4_DOWNCAST_FUNC(RuleStartState, A4_ATNST_RULE_START)
-A4_DOWNCAST_FUNC(DecisionState, A4_ATNST_BLOCK_START, A4_ATNST_PLUS_BLOCK_START, A4_ATNST_STAR_BLOCK_START, A4_ATNST_TOKEN_START, A4_ATNST_STAR_LOOP_ENTRY, A4_ATNST_PLUS_LOOP_BACK)
-A4_DOWNCAST_FUNC(BlockStartBaseState, A4_ATNST_BLOCK_START, A4_ATNST_PLUS_BLOCK_START, A4_ATNST_STAR_BLOCK_START)
-A4_DOWNCAST_FUNC(BlockStartState, A4_ATNST_BLOCK_START)
-A4_DOWNCAST_FUNC(PlusBlockStartState, A4_ATNST_PLUS_BLOCK_START)
-A4_DOWNCAST_FUNC(StarBlockStartState, A4_ATNST_STAR_BLOCK_START)
-A4_DOWNCAST_FUNC(TokenStartState, A4_ATNST_TOKEN_START)
-A4_DOWNCAST_FUNC(StarLoopEntryState, A4_ATNST_STAR_LOOP_ENTRY)
-A4_DOWNCAST_FUNC(PlusLoopBackState, A4_ATNST_PLUS_LOOP_BACK)
-A4_DOWNCAST_FUNC(RuleStopState, A4_ATNST_RULE_STOP)
-A4_DOWNCAST_FUNC(BlockEndState, A4_ATNST_BLOCK_END)
-A4_DOWNCAST_FUNC(StarLoopBackState, A4_ATNST_STAR_LOOP_BACK)
-A4_DOWNCAST_FUNC(LoopEndState, A4_ATNST_LOOP_END)
-
-#undef A4_DOWNCAST_FUNC
+A4_DOWNCAST_FUNC(A4_ToBasicState, A4_ATNState, A4_ATNBasicState, A4_ATNST_BASIC)
+A4_DOWNCAST_FUNC(A4_ToRuleStartState, A4_ATNState, A4_ATNRuleStartState, A4_ATNST_RULE_START)
+A4_DOWNCAST_FUNC(A4_ToDecisionState, A4_ATNState, A4_ATNDecisionState, A4_ATNST_BLOCK_START, A4_ATNST_PLUS_BLOCK_START, A4_ATNST_STAR_BLOCK_START, A4_ATNST_TOKEN_START, A4_ATNST_STAR_LOOP_ENTRY, A4_ATNST_PLUS_LOOP_BACK)
+A4_DOWNCAST_FUNC(A4_ToBlockStartBaseState, A4_ATNState, A4_ATNBlockStartBaseState, A4_ATNST_BLOCK_START, A4_ATNST_PLUS_BLOCK_START, A4_ATNST_STAR_BLOCK_START)
+A4_DOWNCAST_FUNC(A4_ToBlockStartState, A4_ATNState, A4_ATNBlockStartState, A4_ATNST_BLOCK_START)
+A4_DOWNCAST_FUNC(A4_ToPlusBlockStartState, A4_ATNState, A4_ATNPlusBlockStartState, A4_ATNST_PLUS_BLOCK_START)
+A4_DOWNCAST_FUNC(A4_ToStarBlockStartState, A4_ATNState, A4_ATNStarBlockStartState, A4_ATNST_STAR_BLOCK_START)
+A4_DOWNCAST_FUNC(A4_ToTokenStartState, A4_ATNState, A4_ATNTokenStartState, A4_ATNST_TOKEN_START)
+A4_DOWNCAST_FUNC(A4_ToStarLoopEntryState, A4_ATNState, A4_ATNStarLoopEntryState, A4_ATNST_STAR_LOOP_ENTRY)
+A4_DOWNCAST_FUNC(A4_ToPlusLoopBackState, A4_ATNState, A4_ATNPlusLoopBackState, A4_ATNST_PLUS_LOOP_BACK)
+A4_DOWNCAST_FUNC(A4_ToRuleStopState, A4_ATNState, A4_ATNRuleStopState, A4_ATNST_RULE_STOP)
+A4_DOWNCAST_FUNC(A4_ToBlockEndState, A4_ATNState, A4_ATNBlockEndState, A4_ATNST_BLOCK_END)
+A4_DOWNCAST_FUNC(A4_ToStarLoopBackState, A4_ATNState, A4_ATNStarLoopBackState, A4_ATNST_STAR_LOOP_BACK)
+A4_DOWNCAST_FUNC(A4_ToLoopEndState, A4_ATNState, A4_ATNLoopEndState, A4_ATNST_LOOP_END)
 
 
 // ATN Transitions
@@ -255,6 +246,32 @@ const char* A4_ATNTransitionTypeName(enum A4_ATNTransitionType type);
  * Since we never have to change the ATN transitions once we construct it, we can fix these transitions as specific
  * classes. The DFA transitions on the other hand need to update the labels as it adds transitions to
  * the states. We'll use the term Edge for the DFA to distinguish them from ATN transitions.
+ *
+ * Struct hierarchy:
+ *
+ * A4_ATNTransition
+ *  │
+ *  ├──A4_ATNEpsilonTransition
+ *  │
+ *  ├──A4_ATNRangeTransition
+ *  │
+ *  ├──A4_ATNRuleTransition
+ *  │
+ *  ├──A4_ATNAbstractPredicateTransition
+ *  │   │
+ *  │   ├──A4_ATNPredicateTransition
+ *  │   │
+ *  │   └──A4_ATNPrecedencePredicateTransition
+ *  │
+ *  ├──A4_ATNAtomTransition
+ *  │
+ *  ├──A4_ATNActionTransition
+ *  │
+ *  ├──A4_ATNSetTransition
+ *  │   │
+ *  │   └──A4_ATNNotSetTransition
+ *  │
+ *  └──A4_ATNWildcardTransition
  */
 struct A4_ATNTransition {
     /// Type of this transition.
@@ -267,45 +284,72 @@ struct A4_ATNTransition {
     struct A4_ATNState* target;
 };
 
-/// A4_ATNTT_EPSILON.
+/// A4_ATNTT_EPSILON
 struct A4_ATNEpsilonTransition {
     struct A4_ATNTransition base;
 };
 
-/// A4_ATNTT_RANGE.
+/// A4_ATNTT_RANGE
 struct A4_ATNRangeTransition {
     struct A4_ATNTransition base;
 };
 
-/// A4_ATNTT_RULE.
+/// A4_ATNTT_RULE
 struct A4_ATNRuleTransition {
     struct A4_ATNTransition base;
 };
 
-/// A4_ATNTT_PREDICATE.
-struct A4_ATNPredicateTransition {
+/// A4_ATNTT_PREDICATE, A4_ATNTT_PRECEDENCE
+struct A4_ATNAbstractPredicateTransition {
     struct A4_ATNTransition base;
 };
 
-/// A4_ATNTT_ATOM.
+/// A4_ATNTT_PREDICATE
+struct A4_ATNPredicateTransition {
+    struct A4_ATNAbstractPredicateTransition base;
+};
+
+/// A4_ATNTT_PRECEDENCE
+struct A4_ATNPrecedencePredicateTransition {
+    struct A4_ATNAbstractPredicateTransition base;
+};
+
+/// A4_ATNTT_ATOM
 struct A4_ATNAtomTransition {
     struct A4_ATNTransition base;
 };
 
-/// A4_ATNTT_ACTION.
+/// A4_ATNTT_ACTION
 struct A4_ATNActionTransition {
     struct A4_ATNTransition base;
 };
 
-/// A4_ATNTT_SET and A4_ATNTT_NOT_SET transitions.
+/// A4_ATNTT_SET, A4_ATNTT_NOT_SET
 struct A4_ATNSetTransition {
     struct A4_ATNTransition base;
 };
 
-/// A4_ATNTT_PRECEDENCE.
-struct A4_ATNPrecedenceTransition {
+/// A4_ATNTT_NOT_SET
+struct A4_ATNNotSetTransition {
+    struct A4_ATNSetTransition base;
+};
+
+/// A4_ATNTT_WILDCARD
+struct A4_ATNWildcardTransition {
     struct A4_ATNTransition base;
 };
+
+A4_DOWNCAST_FUNC(A4_ToEpsilonTransition, A4_ATNTransition, A4_ATNEpsilonTransition, A4_ATNTT_EPSILON)
+A4_DOWNCAST_FUNC(A4_ToRangeTransition, A4_ATNTransition, A4_ATNRangeTransition, A4_ATNTT_RANGE)
+A4_DOWNCAST_FUNC(A4_ToRuleTransition, A4_ATNTransition, A4_ATNRuleTransition, A4_ATNTT_RULE)
+A4_DOWNCAST_FUNC(A4_ToAbstractPredicateTransition, A4_ATNTransition, A4_ATNAbstractPredicateTransition, A4_ATNTT_PREDICATE, A4_ATNTT_PRECEDENCE)
+A4_DOWNCAST_FUNC(A4_ToPredicateTransition, A4_ATNTransition, A4_ATNPredicateTransition, A4_ATNTT_PREDICATE)
+A4_DOWNCAST_FUNC(A4_ToPrecedencePredicateTransition, A4_ATNTransition, A4_ATNPrecedencePredicateTransition, A4_ATNTT_PRECEDENCE)
+A4_DOWNCAST_FUNC(A4_ToAtomTransition, A4_ATNTransition, A4_ATNAtomTransition, A4_ATNTT_ATOM)
+A4_DOWNCAST_FUNC(A4_ToActionTransition, A4_ATNTransition, A4_ATNActionTransition, A4_ATNTT_ACTION)
+A4_DOWNCAST_FUNC(A4_ToSetTransition, A4_ATNTransition, A4_ATNSetTransition, A4_ATNTT_SET, A4_ATNTT_NOT_SET)
+A4_DOWNCAST_FUNC(A4_ToNotSetTransition, A4_ATNTransition, A4_ATNNotSetTransition, A4_ATNTT_NOT_SET)
+A4_DOWNCAST_FUNC(A4_ToWildcardTransition, A4_ATNTransition, A4_ATNWildcardTransition, A4_ATNTT_WILDCARD)
 
 
 // ATN

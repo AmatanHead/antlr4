@@ -35,9 +35,9 @@ ADD_LIBRARY(cantlr4
 ADD_SANITIZERS(cantlr4)
 
 ADD_EXECUTABLE(test
+        test/memory/align.cpp
         test/memory/pool.cpp
-        test/util/intset.cpp
-        test/memory/align.cpp)
+        test/util/intset.cpp)
 TARGET_LINK_LIBRARIES(test gtest gtest_main)
 TARGET_LINK_LIBRARIES(test cantlr4)
 TARGET_INCLUDE_DIRECTORIES(test PRIVATE .)
