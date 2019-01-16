@@ -2,6 +2,7 @@
 
 #include "../common.h"
 
+#include <stdalign.h>
 #include <stdbool.h>
 #include <stdlib.h>
 
@@ -74,4 +75,5 @@ void* A4_MemoryPool_MallocAligned(struct A4_MemoryPool* pool, size_t size, size_
 
 /// Allocate object of the given type.
 #define A4_POOL_ALLOC(pool, T) (T*)A4_MemoryPool_MallocAligned((pool), sizeof(T), alignof(T));
+#define A4_POOL_CALLOC(pool, T, size) (T*)A4_MemoryPool_MallocAligned((pool), sizeof(T) * size, alignof(T));
 
