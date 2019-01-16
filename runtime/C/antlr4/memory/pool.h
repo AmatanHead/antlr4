@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../antlr4.h"
+#include "../common.h"
 
 #include <stdbool.h>
 #include <stdlib.h>
