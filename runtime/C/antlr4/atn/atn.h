@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../memory/pool.h"
-#include "../util/intset.h"
+#include "../util/bitset.h"
 #include "../util/one_of.h"
 #include "../common.h"
 
@@ -106,7 +106,7 @@ struct A4_ATNState {
     } transitions;
 
     /// Used to cache lookahead during parsing, not used during construction.
-    struct A4_IntSet* next_token_within_rule;
+    struct A4_BitSet* next_token_within_rule;
 };
 
 /// A4_ATNST_BASIC
