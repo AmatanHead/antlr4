@@ -9,7 +9,7 @@ extern "C" {
     ASSERT_EQ(left, A4_MemoryPool_Left(pool));           \
     ASSERT_EQ(waste, A4_MemoryPool_Waste(pool));
 
-TEST(MemoryPoolTest, TestBasics) {
+TEST(MemoryPool, Basics) {
     struct A4_MemoryPool* pool = A4_MemoryPool_NewDefault();
     CHECK_POOL(0, 0, 0)
     char* mem1 = (char*) A4_MemoryPool_Malloc(pool, 5);
