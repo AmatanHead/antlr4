@@ -17,7 +17,7 @@ const char* A4_ATNStateTypeName(enum A4_ATNStateType type) {
         case A4_ATNST_LOOP_END: return "LOOP_END";
     }
 
-    __builtin_unreachable();
+    A4_UNREACHABLE();
 }
 
 const char* A4_ATNTransitionTypeName(enum A4_ATNTransitionType type) {
@@ -35,5 +35,5 @@ const char* A4_ATNTransitionTypeName(enum A4_ATNTransitionType type) {
         case A4_ATNTT_PRECEDENCE: return "PRECEDENCE";
     }
 
-    __builtin_unreachable();
+    A4_UNREACHABLE();
 }

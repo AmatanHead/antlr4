@@ -1,12 +1,29 @@
 #pragma once
 
 #include "../memory/pool.h"
+#include "../util/intset.h"
+#include "../util/one_of.h"
 
 #include <assert.h>
 #include <stdbool.h>
 
 
 struct A4_ATNState;
+struct A4_ATNBasicState;
+struct A4_ATNRuleStartState;
+struct A4_ATNDecisionState;
+struct A4_ATNBlockStartStateBase;
+struct A4_ATNBlockStartState;
+struct A4_ATNPlusBlockStartState;
+struct A4_ATNStarBlockStartState;
+struct A4_ATNTokenStartState;
+struct A4_ATNStarLoopEntryState;
+struct A4_ATNPlusLoopBackState;
+struct A4_ATNRuleStopState;
+struct A4_ATNBlockEndState;
+struct A4_ATNStarLoopBackState;
+struct A4_ATNLoopEndState;
+
 struct A4_ATNTransition;
 
 
@@ -34,7 +51,39 @@ enum A4_ATNStateType {
 const char* A4_ATNStateTypeName(enum A4_ATNStateType type);
 
 /**
+ * Single state of an ATN.
  *
+ * Struct hierarchy:
+ *
+ * A4_ATNState
+ *  │
+ *  ├──A4_ATNBasicState
+ *  │
+ *  ├──A4_ATNRuleStartState
+ *  │
+ *  ├──A4_ATNDecisionState
+ *  │   │
+ *  │   ├──A4_ATNBlockStartStateBase
+ *  │   │   │
+ *  │   │   ├──A4_ATNBlockStartState
+ *  │   │   │
+ *  │   │   ├──A4_ATNPlusBlockStartState
+ *  │   │   │
+ *  │   │   └──A4_ATNStarBlockStartState
+ *  │   │
+ *  │   ├──A4_ATNTokenStartState
+ *  │   │
+ *  │   ├──A4_ATNStarLoopEntryState
+ *  │   │
+ *  │   └──A4_ATNPlusLoopBackState
+ *  │
+ *  ├── A4_ATNRuleStopState
+ *  │
+ *  ├──A4_ATNBlockEndState
+ *  │
+ *  ├──A4_ATNStarLoopBackState
+ *  │
+ *  └──A4_ATNLoopEndState
  */
 struct A4_ATNState {
     /// Type of this state.
@@ -52,12 +101,129 @@ struct A4_ATNState {
     /// Transitions from this state.
     struct {
         struct A4_ATNTransition** data;
-        unsigned size;
+        size_t size;
     } transitions;
 
     /// Used to cache lookahead during parsing, not used during construction.
-    // nextTokenWithinRule
+    struct A4_IntSet* next_token_within_rule;
 };
+
+/// A4_ATNST_BASIC
+struct A4_ATNBasicState {
+    struct A4_ATNState base;
+};
+
+/// A4_ATNST_RULE_START
+struct A4_ATNRuleStartState {
+    struct A4_ATNState base;
+
+    struct A4_ATNRuleStopState* stop_state;
+
+    bool is_left_recursive_rule;
+};
+
+/// A4_ATNST_BLOCK_START, A4_ATNST_PLUS_BLOCK_START, A4_ATNST_STAR_BLOCK_START,
+/// A4_ATNST_TOKEN_START, A4_ATNST_STAR_LOOP_ENTRY, A4_ATNST_PLUS_LOOP_BACK
+struct A4_ATNDecisionState {
+    struct A4_ATNState base;
+
+    int decision;
+
+    bool non_greedy;
+};
+
+/// A4_ATNST_BLOCK_START, A4_ATNST_PLUS_BLOCK_START, A4_ATNST_STAR_BLOCK_START
+struct A4_ATNBlockStartStateBase {
+    struct A4_ATNDecisionState base;
+
+    struct A4_ATNBlockEndState* block_end;
+};
+
+/// A4_ATNST_BLOCK_START
+struct A4_ATNBlockStartState {
+    struct A4_ATNBlockStartStateBase base;
+};
+
+/// A4_ATNST_PLUS_BLOCK_START
+struct A4_ATNPlusBlockStartState {
+    struct A4_ATNBlockStartStateBase base;
+
+    struct A4_ATNPlusLoopBackState* loopback_state;
+};
+
+/// A4_ATNST_STAR_BLOCK_START
+struct A4_ATNStarBlockStartState {
+    struct A4_ATNBlockStartStateBase base;
+};
+
+/// A4_ATNST_TOKEN_START
+struct A4_ATNTokenStartState {
+    struct A4_ATNDecisionState base;
+};
+
+/// A4_ATNST_STAR_LOOP_ENTRY
+struct A4_ATNStarLoopEntryState {
+    struct A4_ATNDecisionState base;
+
+    struct A4_ATNStarLoopBackState* loopback_state;
+
+    /// Indicates whether this state can benefit from a precedence DFA during SLL decision making.
+    /// This is a computed property that is calculated during ATN deserialization.
+    bool is_precedence_decision;
+};
+
+/// A4_ATNST_PLUS_LOOP_BACK
+struct A4_ATNPlusLoopBackState {
+    struct A4_ATNDecisionState base;
+};
+
+/// A4_ATNST_RULE_STOP
+struct A4_ATNRuleStopState {
+    struct A4_ATNState base;
+};
+
+/// A4_ATNST_BLOCK_END
+struct A4_ATNBlockEndState {
+    struct A4_ATNState base;
+    struct A4_ATNBlockStartStateBase* start_state;
+};
+
+/// A4_ATNST_STAR_LOOP_BACK
+struct A4_ATNStarLoopBackState {
+    struct A4_ATNState base;
+};
+
+/// A4_ATNST_LOOP_END
+struct A4_ATNLoopEndState {
+    struct A4_ATNState base;
+
+    struct A4_ATNState* loopback_state;
+};
+
+// Safe (well, as safe as you can get in C) function to perform downcasts on state struct.
+
+#define A4_DOWNCAST_FUNC(T, ...)                                                                                    \
+static inline struct A4_ATN##T* A4_To##T(struct A4_ATNState* ptr) {                                                 \
+    if (ptr) assert(A4_OneOf(ptr->type, (int[]){ __VA_ARGS__ }, sizeof((int[]){ __VA_ARGS__ }) / sizeof(int)));     \
+    return (struct A4_ATN##T*)(ptr);                                                                                \
+}
+
+A4_DOWNCAST_FUNC(BasicState, A4_ATNST_BASIC)
+A4_DOWNCAST_FUNC(RuleStartState, A4_ATNST_RULE_START)
+A4_DOWNCAST_FUNC(DecisionState, A4_ATNST_BLOCK_START, A4_ATNST_PLUS_BLOCK_START, A4_ATNST_STAR_BLOCK_START, A4_ATNST_TOKEN_START, A4_ATNST_STAR_LOOP_ENTRY, A4_ATNST_PLUS_LOOP_BACK)
+A4_DOWNCAST_FUNC(BlockStartBaseState, A4_ATNST_BLOCK_START, A4_ATNST_PLUS_BLOCK_START, A4_ATNST_STAR_BLOCK_START)
+A4_DOWNCAST_FUNC(BlockStartState, A4_ATNST_BLOCK_START)
+A4_DOWNCAST_FUNC(PlusBlockStartState, A4_ATNST_PLUS_BLOCK_START)
+A4_DOWNCAST_FUNC(StarBlockStartState, A4_ATNST_STAR_BLOCK_START)
+A4_DOWNCAST_FUNC(TokenStartState, A4_ATNST_TOKEN_START)
+A4_DOWNCAST_FUNC(StarLoopEntryState, A4_ATNST_STAR_LOOP_ENTRY)
+A4_DOWNCAST_FUNC(PlusLoopBackState, A4_ATNST_PLUS_LOOP_BACK)
+A4_DOWNCAST_FUNC(RuleStopState, A4_ATNST_RULE_STOP)
+A4_DOWNCAST_FUNC(BlockEndState, A4_ATNST_BLOCK_END)
+A4_DOWNCAST_FUNC(StarLoopBackState, A4_ATNST_STAR_LOOP_BACK)
+A4_DOWNCAST_FUNC(LoopEndState, A4_ATNST_LOOP_END)
+
+#undef A4_DOWNCAST_FUNC
 
 
 // ATN Transitions
