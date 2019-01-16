@@ -1,4 +1,5 @@
 #include "pool.h"
+#include "align.h"
 
 #include <assert.h>
 #include <memory.h>
@@ -6,22 +7,6 @@
 #include <stddef.h>
 #include <errno.h>
 #include <stdio.h>
-
-
-static inline size_t A4_AlignDown(size_t len, size_t align) {
-    assert(align > 0 && (align & (align - 1)) == 0);  // is power of 2
-    return len & ~(align - 1);
-}
-
-static inline size_t A4_AlignUp(size_t len, size_t align) {
-    const size_t alignedResult = A4_AlignDown(len + (align - 1), align);
-    assert(alignedResult >= len);  // check for overflow
-    return alignedResult;
-}
-
-static inline char* A4_AlignUpMem(char* mem, size_t align) {
-    return (char*)A4_AlignUp((size_t)mem, align);
-}
 
 
 // Pool page implementation
