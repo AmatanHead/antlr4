@@ -2,6 +2,7 @@
 
 #include "../memory/pool.h"
 #include "../util/bitset.h"
+#include "../util/intset.h"
 #include "../util/one_of.h"
 #include "../common.h"
 
@@ -287,16 +288,32 @@ struct A4_ATNTransition {
 /// A4_ATNTT_EPSILON
 struct A4_ATNEpsilonTransition {
     struct A4_ATNTransition base;
+
+    /// The rule index of a precedence rule for which this transition is returning from,
+    /// where the precedence value is 0; otherwise, -1.
+    int outermost_precedence_return;
 };
 
 /// A4_ATNTT_RANGE
 struct A4_ATNRangeTransition {
     struct A4_ATNTransition base;
+
+    int from;
+
+    int to;
 };
 
 /// A4_ATNTT_RULE
 struct A4_ATNRuleTransition {
     struct A4_ATNTransition base;
+
+    /// What node to begin computations following ref to rule.
+    struct A4_ATNState* follow_state;
+
+    /// Ptr to the rule definition object for this rule ref.
+    int rule_index;
+
+    int precedence;
 };
 
 /// A4_ATNTT_PREDICATE, A4_ATNTT_PRECEDENCE
@@ -307,26 +324,45 @@ struct A4_ATNAbstractPredicateTransition {
 /// A4_ATNTT_PREDICATE
 struct A4_ATNPredicateTransition {
     struct A4_ATNAbstractPredicateTransition base;
+
+    int rule_index;
+
+    int pred_index;
+
+    bool is_ctx_dependent;
 };
 
 /// A4_ATNTT_PRECEDENCE
 struct A4_ATNPrecedencePredicateTransition {
     struct A4_ATNAbstractPredicateTransition base;
+
+    int precedence;
 };
 
 /// A4_ATNTT_ATOM
 struct A4_ATNAtomTransition {
     struct A4_ATNTransition base;
+
+    /// The token type or character value; or, signifies special label.
+    int label;
 };
 
 /// A4_ATNTT_ACTION
 struct A4_ATNActionTransition {
     struct A4_ATNTransition base;
+
+    int rule_index;
+
+    int action_index;
+
+    bool is_ctx_dependent;
 };
 
 /// A4_ATNTT_SET, A4_ATNTT_NOT_SET
 struct A4_ATNSetTransition {
     struct A4_ATNTransition base;
+
+    struct A4_IntSet* set;
 };
 
 /// A4_ATNTT_NOT_SET
