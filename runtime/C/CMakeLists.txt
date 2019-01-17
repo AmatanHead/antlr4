@@ -29,6 +29,8 @@ ADD_LIBRARY(cantlr4
 
         antlr4/util/bitset.c
         antlr4/util/bitset.h
+        antlr4/util/intset.c
+        antlr4/util/intset.h
         antlr4/util/one_of.c
         antlr4/util/one_of.h
 )
@@ -37,7 +39,9 @@ ADD_SANITIZERS(cantlr4)
 ADD_EXECUTABLE(test
         test/memory/align.cpp
         test/memory/pool.cpp
-        test/util/bitset.cpp)
+        test/util/bitset.cpp
+        test/util/intset.cpp
+)
 TARGET_LINK_LIBRARIES(test gtest gtest_main)
 TARGET_LINK_LIBRARIES(test cantlr4)
 TARGET_INCLUDE_DIRECTORIES(test PRIVATE .)

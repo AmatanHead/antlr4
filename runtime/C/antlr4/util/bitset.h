@@ -8,10 +8,12 @@
 
 
 /**
- * A set of integers.
+ * A set of integers implemented as a bitset.
  *
  * Antlr uses integer sets to store state ids. Since number of states is usually low (below 10000),
- * we use bitset here. TODO: try using interval sets instead.
+ * we use bitset here.
+ *
+ * TODO: try using interval sets instead.
  */
 struct A4_BitSet;
 
@@ -35,7 +37,7 @@ void A4_BitSet_Clear(struct A4_BitSet* set);
 size_t A4_BitSet_Size(const struct A4_BitSet* set);
 
 /// Add new element to the set. If reallocation was unsuccessful, set is guaranteed to stay valid and unchanged.
-A4_Errno A4_BitSet_Add(struct A4_BitSet* set, size_t elem);
+A4_Errno A4_BitSet_Add(struct A4_BitSet* set, uint32_t elem);
 
 /// Allocate a new chunk of memory on the set with the given alignment.
-bool A4_BitSet_Contains(const struct A4_BitSet* set, size_t elem);
+bool A4_BitSet_Contains(const struct A4_BitSet* set, uint32_t elem);

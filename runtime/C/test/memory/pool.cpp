@@ -29,9 +29,9 @@ TEST(MemoryPool, Basics) {
 
     ASSERT_EQ(mem2 - mem1, 5);
 
-    for (char i = 0; i < 5; ++i) mem1[i] = i;
-    for (char i = 0; i < 5; ++i) mem2[i] = (char)5 - i;
-    for (char i = 0; i < 5; ++i) ASSERT_NE(mem1[i], mem2[i]);
+    for (size_t i = 0; i < 5; ++i) mem1[i] = (char)i;
+    for (size_t i = 0; i < 5; ++i) mem2[i] = (char)5 - (char)i;
+    for (size_t i = 0; i < 5; ++i) ASSERT_NE(mem1[i], mem2[i]);
 
     A4_MemoryPool_Clear(pool);
 

@@ -11,7 +11,7 @@
 typedef unsigned A4_BitSet_ElemType;  // TODO: try 32 and 64 bit words on different arches
 
 struct A4_BitSet {
-    /// Where out bits stored.
+    /// Where our bits stored.
     struct {
         A4_BitSet_ElemType* restrict data;
         size_t size;
@@ -92,11 +92,11 @@ static inline A4_Errno A4_BitSet_Resize(struct A4_BitSet* set, const size_t size
     return A4_SUCCESS;
 }
 
-static inline A4_BitSet_ElemType A4_BitSet_GetMask(const size_t elem) {
+static inline A4_BitSet_ElemType A4_BitSet_GetMask(const uint32_t elem) {
     return ((A4_BitSet_ElemType)1) << (elem % (sizeof(A4_BitSet_ElemType) * 8));
 }
 
-A4_Errno A4_BitSet_Add(struct A4_BitSet* set, const size_t elem) {
+A4_Errno A4_BitSet_Add(struct A4_BitSet* set, const uint32_t elem) {
     assert(set);
     assert(!set->is_immutable);
 
@@ -119,7 +119,7 @@ A4_Errno A4_BitSet_Add(struct A4_BitSet* set, const size_t elem) {
     return A4_SUCCESS;
 }
 
-bool A4_BitSet_Contains(const struct A4_BitSet* set, const size_t elem) {
+bool A4_BitSet_Contains(const struct A4_BitSet* set, const uint32_t elem) {
     assert(set);
 
     const size_t index = elem / (sizeof(A4_BitSet_ElemType) * 8);
@@ -127,7 +127,5 @@ bool A4_BitSet_Contains(const struct A4_BitSet* set, const size_t elem) {
         return false;
     }
 
-    A4_BitSet_ElemType mask = A4_BitSet_GetMask(elem);
-
-    return (set->bits.data[index] & mask) != 0;
+    return (set->bits.data[index] & A4_BitSet_GetMask(elem)) != 0;
 }
