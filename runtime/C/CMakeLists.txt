@@ -16,10 +16,17 @@ ADD_LIBRARY(cantlr4
         antlr4/common.h
         antlr4/common.c
 
+        antlr4/atn/fwd.h
         antlr4/atn/atn.c
         antlr4/atn/atn.h
         antlr4/atn/atn_config.c
         antlr4/atn/atn_config.h
+        antlr4/atn/atn_state.c
+        antlr4/atn/atn_state.h
+        antlr4/atn/atn_transition.c
+        antlr4/atn/atn_transition.h
+        antlr4/atn/lexer_action.c
+        antlr4/atn/lexer_action.h
 
         antlr4/dfa/dfa.c
         antlr4/dfa/dfa.h

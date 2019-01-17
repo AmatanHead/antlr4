@@ -1,0 +1,50 @@
+#pragma once
+
+#include "../common.h"
+
+typedef enum A4_ATNStateType A4_ATNStateType;
+typedef struct A4_ATNState A4_ATNState;
+typedef struct A4_ATNBasicState A4_ATNBasicState;
+typedef struct A4_ATNRuleStartState A4_ATNRuleStartState;
+typedef struct A4_ATNDecisionState A4_ATNDecisionState;
+typedef struct A4_ATNBlockStartStateBase A4_ATNBlockStartStateBase;
+typedef struct A4_ATNBlockStartState A4_ATNBlockStartState;
+typedef struct A4_ATNPlusBlockStartState A4_ATNPlusBlockStartState;
+typedef struct A4_ATNStarBlockStartState A4_ATNStarBlockStartState;
+typedef struct A4_ATNTokenStartState A4_ATNTokenStartState;
+typedef struct A4_ATNStarLoopEntryState A4_ATNStarLoopEntryState;
+typedef struct A4_ATNPlusLoopBackState A4_ATNPlusLoopBackState;
+typedef struct A4_ATNRuleStopState A4_ATNRuleStopState;
+typedef struct A4_ATNBlockEndState A4_ATNBlockEndState;
+typedef struct A4_ATNStarLoopBackState A4_ATNStarLoopBackState;
+typedef struct A4_ATNLoopEndState A4_ATNLoopEndState;
+
+typedef enum A4_ATNTransitionType A4_ATNTransitionType;
+typedef struct A4_ATNTransition A4_ATNTransition;
+typedef struct A4_ATNTransition A4_ATNTransition;
+typedef struct A4_ATNEpsilonTransition A4_ATNEpsilonTransition;
+typedef struct A4_ATNRangeTransition A4_ATNRangeTransition;
+typedef struct A4_ATNRuleTransition A4_ATNRuleTransition;
+typedef struct A4_ATNAbstractPredicateTransition A4_ATNAbstractPredicateTransition;
+typedef struct A4_ATNPredicateTransition A4_ATNPredicateTransition;
+typedef struct A4_ATNPrecedencePredicateTransition A4_ATNPrecedencePredicateTransition;
+typedef struct A4_ATNAtomTransition A4_ATNAtomTransition;
+typedef struct A4_ATNActionTransition A4_ATNActionTransition;
+typedef struct A4_ATNSetTransition A4_ATNSetTransition;
+typedef struct A4_ATNNotSetTransition A4_ATNNotSetTransition;
+typedef struct A4_ATNWildcardTransition A4_ATNWildcardTransition;
+
+typedef enum A4_LexerActionType A4_LexerActionType;
+typedef struct A4_LexerAction A4_LexerAction;
+typedef struct A4_LexerChannelAction A4_LexerChannelAction;
+typedef struct A4_LexerCustomAction A4_LexerCustomAction;
+typedef struct A4_LexerModeAction A4_LexerModeAction;
+typedef struct A4_LexerMoreAction A4_LexerMoreAction;
+typedef struct A4_LexerPopModeAction A4_LexerPopModeAction;
+typedef struct A4_LexerPushModeAction A4_LexerPushModeAction;
+typedef struct A4_LexerSkipAction A4_LexerSkipAction;
+typedef struct A4_LexerTypeAction A4_LexerTypeAction;
+typedef struct A4_LexerIndexedCustomAction A4_LexerIndexedCustomAction;
+
+typedef enum A4_ATNType A4_ATNType;
+typedef struct A4_ATN A4_ATN;
