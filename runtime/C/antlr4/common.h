@@ -39,8 +39,13 @@ typedef int A4_Errno;
 // Typing support
 // --------------------------------------------------------------------------------------------------------------------
 
-/// Helpers to avoid hell when defining struct, enum and union typedefs.
-/// Also helps keeping those headers C++-compatible.
+// Normally I try to avoid typedefs as mush as possible, however, this project is a little bit different.
+// I want to keep headers of this library C++-compatible so that it can eventually replace (or complement)
+// the C++ runtime. To do so I need to ensure that there are no enum predeclarations and all enums have proper type
+// specified (i.e. `enum : int`). So I'm forcing myself to include all necessary headers by using typedef'd enums
+// and structs. As a bonus, typedefs add protection against misspells.
+
+/// Helpers to avoid hell when defining structs, enums and unions. Add proper typedefs, keep enums C++-compatible.
 /// @{
 #define a4_struct(name) typedef struct name name; struct name
 #define a4_union(name) typedef union name name; union name
