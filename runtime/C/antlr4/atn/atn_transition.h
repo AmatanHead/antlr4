@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../util/intset.h"
 #include "../common.h"
 
 #include "fwd.h"
@@ -11,7 +12,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 /// Type of ATN transition.
-enum A4_ATNTransitionType {
+a4_enum(A4_ATNTransitionType) {
     A4_ATNTT_INVALID = 0,
     A4_ATNTT_EPSILON = 1,
     A4_ATNTT_RANGE = 2,
@@ -26,7 +27,7 @@ enum A4_ATNTransitionType {
 };
 
 /// Stringify type of ATN transition.
-const char* A4_ATNTransitionTypeName(enum A4_ATNTransitionType type);
+const char* A4_ATNTransitionTypeName(A4_ATNTransitionType type);
 
 /**
  * An ATN transition between any two ATN states.
@@ -65,18 +66,18 @@ const char* A4_ATNTransitionTypeName(enum A4_ATNTransitionType type);
  */
 struct A4_ATNTransition {
     /// Type of this transition.
-    enum A4_ATNTransitionType type;
+    A4_ATNTransitionType type;
 
     /// This is an epsilon transition.
     bool is_epsilon;
 
     /// Target of this transition.
-    struct A4_ATNState* target;
+    A4_ATNState* target;
 };
 
 /// A4_ATNTT_EPSILON
 struct A4_ATNEpsilonTransition {
-    struct A4_ATNTransition base;
+    A4_ATNTransition base;
 
     /// The rule index of a precedence rule for which this transition is returning from,
     /// where the precedence value is 0; otherwise, -1.
@@ -85,7 +86,7 @@ struct A4_ATNEpsilonTransition {
 
 /// A4_ATNTT_RANGE
 struct A4_ATNRangeTransition {
-    struct A4_ATNTransition base;
+    A4_ATNTransition base;
 
     int from;
 
@@ -94,10 +95,10 @@ struct A4_ATNRangeTransition {
 
 /// A4_ATNTT_RULE
 struct A4_ATNRuleTransition {
-    struct A4_ATNTransition base;
+    A4_ATNTransition base;
 
     /// What node to begin computations following ref to rule.
-    struct A4_ATNState* follow_state;
+    A4_ATNState* follow_state;
 
     /// Ptr to the rule definition object for this rule ref.
     int rule_index;
@@ -107,12 +108,12 @@ struct A4_ATNRuleTransition {
 
 /// A4_ATNTT_PREDICATE, A4_ATNTT_PRECEDENCE
 struct A4_ATNAbstractPredicateTransition {
-    struct A4_ATNTransition base;
+    A4_ATNTransition base;
 };
 
 /// A4_ATNTT_PREDICATE
 struct A4_ATNPredicateTransition {
-    struct A4_ATNAbstractPredicateTransition base;
+    A4_ATNAbstractPredicateTransition base;
 
     int rule_index;
 
@@ -123,14 +124,14 @@ struct A4_ATNPredicateTransition {
 
 /// A4_ATNTT_PRECEDENCE
 struct A4_ATNPrecedencePredicateTransition {
-    struct A4_ATNAbstractPredicateTransition base;
+    A4_ATNAbstractPredicateTransition base;
 
     int precedence;
 };
 
 /// A4_ATNTT_ATOM
 struct A4_ATNAtomTransition {
-    struct A4_ATNTransition base;
+    A4_ATNTransition base;
 
     /// The token type or character value; or, signifies special label.
     int label;
@@ -138,7 +139,7 @@ struct A4_ATNAtomTransition {
 
 /// A4_ATNTT_ACTION
 struct A4_ATNActionTransition {
-    struct A4_ATNTransition base;
+    A4_ATNTransition base;
 
     int rule_index;
 
@@ -149,19 +150,19 @@ struct A4_ATNActionTransition {
 
 /// A4_ATNTT_SET, A4_ATNTT_NOT_SET
 struct A4_ATNSetTransition {
-    struct A4_ATNTransition base;
+    A4_ATNTransition base;
 
-    struct A4_IntSet* set;
+    A4_IntSet* set;
 };
 
 /// A4_ATNTT_NOT_SET
 struct A4_ATNNotSetTransition {
-    struct A4_ATNSetTransition base;
+    A4_ATNSetTransition base;
 };
 
 /// A4_ATNTT_WILDCARD
 struct A4_ATNWildcardTransition {
-    struct A4_ATNTransition base;
+    A4_ATNTransition base;
 };
 
 A4_DOWNCAST_FUNC(A4_ToEpsilonTransition, A4_ATNTransition, A4_ATNEpsilonTransition, A4_ATNTT_EPSILON)

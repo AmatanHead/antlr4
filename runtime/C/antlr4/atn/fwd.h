@@ -2,7 +2,6 @@
 
 #include "../common.h"
 
-typedef enum A4_ATNStateType A4_ATNStateType;
 typedef struct A4_ATNState A4_ATNState;
 typedef struct A4_ATNBasicState A4_ATNBasicState;
 typedef struct A4_ATNRuleStartState A4_ATNRuleStartState;
@@ -19,7 +18,6 @@ typedef struct A4_ATNBlockEndState A4_ATNBlockEndState;
 typedef struct A4_ATNStarLoopBackState A4_ATNStarLoopBackState;
 typedef struct A4_ATNLoopEndState A4_ATNLoopEndState;
 
-typedef enum A4_ATNTransitionType A4_ATNTransitionType;
 typedef struct A4_ATNTransition A4_ATNTransition;
 typedef struct A4_ATNTransition A4_ATNTransition;
 typedef struct A4_ATNEpsilonTransition A4_ATNEpsilonTransition;
@@ -34,7 +32,6 @@ typedef struct A4_ATNSetTransition A4_ATNSetTransition;
 typedef struct A4_ATNNotSetTransition A4_ATNNotSetTransition;
 typedef struct A4_ATNWildcardTransition A4_ATNWildcardTransition;
 
-typedef enum A4_LexerActionType A4_LexerActionType;
 typedef struct A4_LexerAction A4_LexerAction;
 typedef struct A4_LexerChannelAction A4_LexerChannelAction;
 typedef struct A4_LexerCustomAction A4_LexerCustomAction;
@@ -46,5 +43,4 @@ typedef struct A4_LexerSkipAction A4_LexerSkipAction;
 typedef struct A4_LexerTypeAction A4_LexerTypeAction;
 typedef struct A4_LexerIndexedCustomAction A4_LexerIndexedCustomAction;
 
-typedef enum A4_ATNType A4_ATNType;
 typedef struct A4_ATN A4_ATN;

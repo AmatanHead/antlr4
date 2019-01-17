@@ -24,8 +24,8 @@ struct A4_BitSet {
     bool is_immutable;
 };
 
-struct A4_BitSet* A4_BitSet_New() {
-    struct A4_BitSet* set = malloc(sizeof(struct A4_BitSet));
+A4_BitSet* A4_BitSet_New() {
+    A4_BitSet* set = malloc(sizeof(A4_BitSet));
     if (!set) return NULL;
 
     set->bits.data = NULL;
@@ -36,17 +36,17 @@ struct A4_BitSet* A4_BitSet_New() {
     return set;
 }
 
-void A4_BitSet_Delete(struct A4_BitSet* set) {
+void A4_BitSet_Delete(A4_BitSet* set) {
     if (!set) return;
     assert(!set->is_immutable);
     free(set->bits.data);
     free(set);
 }
 
-struct A4_BitSet* A4_BitSet_CopyToPool(const struct A4_BitSet* set, struct A4_MemoryPool* pool) {
+A4_BitSet* A4_BitSet_CopyToPool(const A4_BitSet* set, A4_MemoryPool* pool) {
     assert(set);
 
-    struct A4_BitSet* new_set = A4_POOL_ALLOC(pool, struct A4_BitSet);
+    A4_BitSet* new_set = A4_POOL_ALLOC(pool, A4_BitSet);
     if (!new_set) return NULL;
 
     new_set->bits.data = A4_POOL_CALLOC(pool, A4_BitSet_ElemType, set->bits.size);
@@ -61,7 +61,7 @@ struct A4_BitSet* A4_BitSet_CopyToPool(const struct A4_BitSet* set, struct A4_Me
     return new_set;
 }
 
-void A4_BitSet_Clear(struct A4_BitSet* set) {
+void A4_BitSet_Clear(A4_BitSet* set) {
     assert(set);
     assert(!set->is_immutable);
     free(set->bits.data);
@@ -70,12 +70,12 @@ void A4_BitSet_Clear(struct A4_BitSet* set) {
     set->num_elements = 0;
 }
 
-size_t A4_BitSet_Size(const struct A4_BitSet* set) {
+size_t A4_BitSet_Size(const A4_BitSet* set) {
     assert(set);
     return set->num_elements;
 }
 
-static inline A4_Errno A4_BitSet_Resize(struct A4_BitSet* set, const size_t size) {
+static inline A4_Errno A4_BitSet_Resize(A4_BitSet* set, const size_t size) {
     assert(set);
     assert(!set->is_immutable);
 
@@ -96,7 +96,7 @@ static inline A4_BitSet_ElemType A4_BitSet_GetMask(const uint32_t elem) {
     return ((A4_BitSet_ElemType)1) << (elem % (sizeof(A4_BitSet_ElemType) * 8));
 }
 
-A4_Errno A4_BitSet_Add(struct A4_BitSet* set, const uint32_t elem) {
+A4_Errno A4_BitSet_Add(A4_BitSet* set, const uint32_t elem) {
     assert(set);
     assert(!set->is_immutable);
 
@@ -119,7 +119,7 @@ A4_Errno A4_BitSet_Add(struct A4_BitSet* set, const uint32_t elem) {
     return A4_SUCCESS;
 }
 
-bool A4_BitSet_Contains(const struct A4_BitSet* set, const uint32_t elem) {
+bool A4_BitSet_Contains(const A4_BitSet* set, const uint32_t elem) {
     assert(set);
 
     const size_t index = elem / (sizeof(A4_BitSet_ElemType) * 8);

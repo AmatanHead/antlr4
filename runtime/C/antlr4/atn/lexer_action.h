@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../util/bitset.h"
 #include "../common.h"
 
 #include "fwd.h"
@@ -12,7 +11,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 ///  Represents the serialization type of a lexer action.
-enum A4_LexerActionType {
+a4_enum(A4_LexerActionType) {
     A4_LAT_INVALID = 0,
     A4_LAT_CHANNEL = 1,
     A4_LAT_CUSTOM = 2,
@@ -29,19 +28,19 @@ enum A4_LexerActionType {
 /// Represents a single action which can be executed following the successful match of a lexer rule.
 /// Lexer actions are used for both embedded action syntax and ANTLR 4's new lexer command syntax.
 struct A4_LexerAction {
-    enum A4_LexerActionType type;
+    A4_LexerActionType type;
 };
 
 /// A4_LAT_CHANNEL
 struct A4_LexerChannelAction {
-    struct A4_LexerAction base;
+    A4_LexerAction base;
 
     int channel;
 };
 
 /// A4_LAT_CUSTOM
 struct A4_LexerCustomAction {
-    struct A4_LexerAction base;
+    A4_LexerAction base;
 
     int rule_index;
 
@@ -50,47 +49,47 @@ struct A4_LexerCustomAction {
 
 /// A4_LAT_MODE
 struct A4_LexerModeAction {
-    struct A4_LexerAction base;
+    A4_LexerAction base;
 
     int mode;
 };
 
 /// A4_LAT_MORE
 struct A4_LexerMoreAction {
-    struct A4_LexerAction base;
+    A4_LexerAction base;
 };
 
 /// A4_LAT_POP_MODE
 struct A4_LexerPopModeAction {
-    struct A4_LexerAction base;
+    A4_LexerAction base;
 };
 
 /// A4_LAT_PUSH_MODE
 struct A4_LexerPushModeAction {
-    struct A4_LexerAction base;
+    A4_LexerAction base;
 
     int mode;
 };
 
 /// A4_LAT_SKIP
 struct A4_LexerSkipAction {
-    struct A4_LexerAction base;
+    A4_LexerAction base;
 };
 
 /// A4_LAT_TYPE
 struct A4_LexerTypeAction {
-    struct A4_LexerAction base;
+    A4_LexerAction base;
 
     int type;
 };
 
 /// A4_LAT_INDEXED_CUSTOM
 struct A4_LexerIndexedCustomAction {
-    struct A4_LexerAction base;
+    A4_LexerAction base;
 
     int offset;
 
-    struct A4_LexerAction* action;
+    A4_LexerAction* action;
 };
 
 A4_DOWNCAST_FUNC(A4_ToLexerChannelAction, A4_LexerAction, A4_LexerChannelAction, A4_LAT_CHANNEL)

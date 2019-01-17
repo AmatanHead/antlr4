@@ -26,6 +26,28 @@ typedef int A4_Errno;
 #   define A4_UNREACHABLE() abort()
 #endif
 
+#if defined(__GNUC__)
+#    define A4_NODISCARD __attribute__((warn_unused_result))
+#elif  defined(_MSC_VER)
+#    define A4_NODISCARD _Check_return_
+#endif
+
+
+// Typing support
+// --------------------------------------------------------------------------------------------------------------------
+
+/// Helpers to avoid hell when defining struct, enum and union typedefs.
+/// Also helps keeping those headers C++-compatible.
+/// @{
+#define a4_struct(name) typedef struct name name; struct name
+#define a4_union(name) typedef union name name; union name
+#ifdef __cplusplus
+#define a4_enum(name) enum name : int
+#else
+#define a4_enum(name) typedef enum name name; enum name
+#endif
+/// @}
+
 
 // Polymorphism support
 // --------------------------------------------------------------------------------------------------------------------

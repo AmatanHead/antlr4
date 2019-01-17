@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../util/bitset.h"
 #include "../common.h"
 
 #include "fwd.h"
@@ -11,7 +12,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 /// Type of ATN state.
-enum A4_ATNStateType {
+a4_enum(A4_ATNStateType) {
     A4_ATNST_INVALID = 0,
     A4_ATNST_BASIC = 1,
     A4_ATNST_RULE_START = 2,
@@ -28,7 +29,7 @@ enum A4_ATNStateType {
 };
 
 /// Stringify type of ATN state.
-const char* A4_ATNStateTypeName(enum A4_ATNStateType type);
+const char* A4_ATNStateTypeName(A4_ATNStateType type);
 
 /**
  * Single state of an ATN.
@@ -67,7 +68,7 @@ const char* A4_ATNStateTypeName(enum A4_ATNStateType type);
  */
 struct A4_ATNState {
     /// Type of this state.
-    enum A4_ATNStateType type;
+    A4_ATNStateType type;
 
     /// Id of this state.
     int state_number;
@@ -80,24 +81,24 @@ struct A4_ATNState {
 
     /// Transitions from this state.
     struct {
-        struct A4_ATNTransition** data;
+        A4_ATNTransition** data;
         size_t size;
     } transitions;
 
     /// Used to cache lookahead during parsing, not used during construction.
-    struct A4_BitSet* next_token_within_rule;
+    A4_BitSet* next_token_within_rule;
 };
 
 /// A4_ATNST_BASIC
 struct A4_ATNBasicState {
-    struct A4_ATNState base;
+    A4_ATNState base;
 };
 
 /// A4_ATNST_RULE_START
 struct A4_ATNRuleStartState {
-    struct A4_ATNState base;
+    A4_ATNState base;
 
-    struct A4_ATNRuleStopState* stop_state;
+    A4_ATNRuleStopState* stop_state;
 
     bool is_left_recursive_rule;
 };
@@ -105,7 +106,7 @@ struct A4_ATNRuleStartState {
 /// A4_ATNST_BLOCK_START, A4_ATNST_PLUS_BLOCK_START, A4_ATNST_STAR_BLOCK_START,
 /// A4_ATNST_TOKEN_START, A4_ATNST_STAR_LOOP_ENTRY, A4_ATNST_PLUS_LOOP_BACK
 struct A4_ATNDecisionState {
-    struct A4_ATNState base;
+    A4_ATNState base;
 
     int decision;
 
@@ -114,38 +115,38 @@ struct A4_ATNDecisionState {
 
 /// A4_ATNST_BLOCK_START, A4_ATNST_PLUS_BLOCK_START, A4_ATNST_STAR_BLOCK_START
 struct A4_ATNBlockStartStateBase {
-    struct A4_ATNDecisionState base;
+    A4_ATNDecisionState base;
 
-    struct A4_ATNBlockEndState* block_end;
+    A4_ATNBlockEndState* block_end;
 };
 
 /// A4_ATNST_BLOCK_START
 struct A4_ATNBlockStartState {
-    struct A4_ATNBlockStartStateBase base;
+    A4_ATNBlockStartStateBase base;
 };
 
 /// A4_ATNST_PLUS_BLOCK_START
 struct A4_ATNPlusBlockStartState {
-    struct A4_ATNBlockStartStateBase base;
+    A4_ATNBlockStartStateBase base;
 
-    struct A4_ATNPlusLoopBackState* loopback_state;
+    A4_ATNPlusLoopBackState* loopback_state;
 };
 
 /// A4_ATNST_STAR_BLOCK_START
 struct A4_ATNStarBlockStartState {
-    struct A4_ATNBlockStartStateBase base;
+    A4_ATNBlockStartStateBase base;
 };
 
 /// A4_ATNST_TOKEN_START
 struct A4_ATNTokenStartState {
-    struct A4_ATNDecisionState base;
+    A4_ATNDecisionState base;
 };
 
 /// A4_ATNST_STAR_LOOP_ENTRY
 struct A4_ATNStarLoopEntryState {
-    struct A4_ATNDecisionState base;
+    A4_ATNDecisionState base;
 
-    struct A4_ATNStarLoopBackState* loopback_state;
+    A4_ATNStarLoopBackState* loopback_state;
 
     /// Indicates whether this state can benefit from a precedence DFA during SLL decision making.
     /// This is a computed property that is calculated during ATN deserialization.
@@ -154,30 +155,31 @@ struct A4_ATNStarLoopEntryState {
 
 /// A4_ATNST_PLUS_LOOP_BACK
 struct A4_ATNPlusLoopBackState {
-    struct A4_ATNDecisionState base;
+    A4_ATNDecisionState base;
 };
 
 /// A4_ATNST_RULE_STOP
 struct A4_ATNRuleStopState {
-    struct A4_ATNState base;
+    A4_ATNState base;
 };
 
 /// A4_ATNST_BLOCK_END
 struct A4_ATNBlockEndState {
-    struct A4_ATNState base;
-    struct A4_ATNBlockStartStateBase* start_state;
+    A4_ATNState base;
+
+    A4_ATNBlockStartStateBase* start_state;
 };
 
 /// A4_ATNST_STAR_LOOP_BACK
 struct A4_ATNStarLoopBackState {
-    struct A4_ATNState base;
+    A4_ATNState base;
 };
 
 /// A4_ATNST_LOOP_END
 struct A4_ATNLoopEndState {
-    struct A4_ATNState base;
+    A4_ATNState base;
 
-    struct A4_ATNState* loopback_state;
+    A4_ATNState* loopback_state;
 };
 
 A4_DOWNCAST_FUNC(A4_ToBasicState, A4_ATNState, A4_ATNBasicState, A4_ATNST_BASIC)
