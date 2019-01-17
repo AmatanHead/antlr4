@@ -14,9 +14,9 @@
 
 struct A4_MemoryPoolPage {
     /// Non-owning pointer to the first unused byte in the memory chunk.
-    char*                     current;
+    char* current;
     /// How many bytes left in the chunk.
-    size_t                    left;
+    size_t left;
     /// Owning pointer to the next page (used up previously).
     struct A4_MemoryPoolPage* next;
 };
@@ -95,13 +95,13 @@ struct A4_MemoryPool {
     /// Current options.
     struct A4_MemoryPool_Options options;
     /// Current page.
-    struct A4_MemoryPoolPage*    page;
+    struct A4_MemoryPoolPage* page;
     /// Size of all pages except for the current one.
-    size_t                       allocated;
+    size_t allocated;
     /// Allocated but unused memory on all pages except for the current one.
-    size_t                       waste;
+    size_t waste;
     /// Size of the next block.
-    size_t                       next_page_size;
+    size_t next_page_size;
 };
 
 struct A4_MemoryPool* A4_MemoryPool_New(struct A4_MemoryPool_Options options) {
