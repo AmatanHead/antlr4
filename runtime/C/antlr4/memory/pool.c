@@ -131,7 +131,7 @@ void A4_MemoryPool_Clear(struct A4_MemoryPool* pool) {
     pool->next_page_size = pool->options.page_size;
 }
 
-static A4_Errno A4_MemoryPool_AddPageFor(struct A4_MemoryPool* pool, size_t size) {
+static A4_ERRNO A4_MemoryPool_AddPageFor(struct A4_MemoryPool* pool, size_t size) {
     assert(pool);
 
     size_t page_size = pool->next_page_size;

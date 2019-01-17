@@ -115,11 +115,11 @@ static inline bool A4_IntSet_Adjacent(const A4_IntSet_Interval a, const A4_IntSe
     return a.lower == b.upper + 1 || a.upper == b.lower - 1;
 }
 
-A4_Errno A4_IntSet_Add(A4_IntSet* set, const uint32_t elem) {
+A4_ERRNO A4_IntSet_Add(A4_IntSet* set, const uint32_t elem) {
     return A4_IntSet_AddInterval(set, elem, elem);
 }
 
-A4_Errno A4_IntSet_InsertInterval(A4_IntSet* set, size_t where, A4_IntSet_Interval interval) {
+A4_ERRNO A4_IntSet_InsertInterval(A4_IntSet* set, size_t where, A4_IntSet_Interval interval) {
     assert(set);
     assert(set->intervals.capacity >= set->intervals.size);
 
@@ -143,7 +143,7 @@ A4_Errno A4_IntSet_InsertInterval(A4_IntSet* set, size_t where, A4_IntSet_Interv
     return A4_SUCCESS;
 }
 
-A4_Errno A4_IntSet_AddInterval(A4_IntSet* set, const uint32_t lower, const uint32_t upper) {
+A4_ERRNO A4_IntSet_AddInterval(A4_IntSet* set, const uint32_t lower, const uint32_t upper) {
     assert(set);
 
     A4_IntSet_Interval interval = {lower, upper};

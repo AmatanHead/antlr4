@@ -37,7 +37,7 @@ void A4_BitSet_Clear(A4_BitSet* set);
 size_t A4_BitSet_Size(const A4_BitSet* set);
 
 /// Add new element to the set. If reallocation was unsuccessful, set is guaranteed to stay valid and unchanged.
-A4_Errno A4_BitSet_Add(A4_BitSet* set, uint32_t elem);
+A4_ERRNO A4_BitSet_Add(A4_BitSet* set, uint32_t elem);
 
 /// Allocate a new chunk of memory on the set with the given alignment.
 bool A4_BitSet_Contains(const A4_BitSet* set, uint32_t elem);

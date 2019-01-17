@@ -11,6 +11,9 @@
 /// Indicates success (zero code) or failure (non-zero code) of some procedure.
 typedef int A4_Errno;
 
+/// Should be used as function result type to enforce error checking.
+#define A4_ERRNO A4_Errno A4_NODISCARD
+
 /// Return code that indicates success.
 #define A4_SUCCESS 0
 

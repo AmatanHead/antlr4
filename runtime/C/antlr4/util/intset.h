@@ -33,10 +33,10 @@ A4_IntSet* A4_IntSet_CopyToPool(const A4_IntSet* set, A4_MemoryPool* pool);
 void A4_IntSet_Clear(A4_IntSet* set);
 
 /// Add new element to the set. If reallocation was unsuccessful, set is guaranteed to stay valid and unchanged.
-A4_Errno A4_IntSet_Add(A4_IntSet* set, uint32_t elem);
+A4_ERRNO A4_IntSet_Add(A4_IntSet* set, uint32_t elem);
 
 /// Add new interval to the set. If reallocation was unsuccessful, set is guaranteed to stay valid and unchanged.
-A4_Errno A4_IntSet_AddInterval(A4_IntSet* set, uint32_t lower, uint32_t upper);
+A4_ERRNO A4_IntSet_AddInterval(A4_IntSet* set, uint32_t lower, uint32_t upper);
 
 /// Allocate a new chunk of memory on the set with the given alignment.
 bool A4_IntSet_Contains(const A4_IntSet* set, uint32_t elem);

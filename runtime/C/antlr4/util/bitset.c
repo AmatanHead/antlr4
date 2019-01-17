@@ -75,7 +75,7 @@ size_t A4_BitSet_Size(const A4_BitSet* set) {
     return set->num_elements;
 }
 
-static inline A4_Errno A4_BitSet_Resize(A4_BitSet* set, const size_t size) {
+static inline A4_ERRNO A4_BitSet_Resize(A4_BitSet* set, const size_t size) {
     assert(set);
     assert(!set->is_immutable);
 
@@ -96,7 +96,7 @@ static inline A4_BitSet_ElemType A4_BitSet_GetMask(const uint32_t elem) {
     return ((A4_BitSet_ElemType)1) << (elem % (sizeof(A4_BitSet_ElemType) * 8));
 }
 
-A4_Errno A4_BitSet_Add(A4_BitSet* set, const uint32_t elem) {
+A4_ERRNO A4_BitSet_Add(A4_BitSet* set, const uint32_t elem) {
     assert(set);
     assert(!set->is_immutable);
 
