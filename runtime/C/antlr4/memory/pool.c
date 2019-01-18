@@ -177,15 +177,16 @@ void* A4_MemoryPool_Malloc(struct A4_MemoryPool* pool, size_t size) {
     // size = A4_AlignUp(size, alignof(max_align_t));
     void* ret = A4_MemoryPoolPage_Alloc(pool->page, size);
     if (ret) return ret;
-    A4_MemoryPool_AddPageFor(pool, size);
+    if (A4_MemoryPool_AddPageFor(pool, size) != A4_SUCCESS) return NULL;
     return A4_MemoryPoolPage_Alloc(pool->page, size);
 }
 
 void* A4_MemoryPool_MallocAligned(struct A4_MemoryPool* pool, size_t size, size_t align) {
     assert(pool);
     // size = A4_AlignUp(size, alignof(max_align_t));
+    if (!size) size = 1;  // have to allocate something in order to get a unique address.
     void* ret = A4_MemoryPoolPage_AllocAligned(pool->page, size, align);
     if (ret) return ret;
-    A4_MemoryPool_AddPageFor(pool, size + align - 1);
+    if (A4_MemoryPool_AddPageFor(pool, size + align - 1) != A4_SUCCESS) return NULL;
     return A4_MemoryPoolPage_AllocAligned(pool->page, size, align);
 }

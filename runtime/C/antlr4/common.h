@@ -103,3 +103,11 @@ static inline struct T* N(struct B* ptr) {                                      
     if (ptr) assert(A4_OneOf(ptr->type, (int[]){ __VA_ARGS__ }, sizeof((int[]){ __VA_ARGS__ }) / sizeof(int)));     \
     return (struct T*)(ptr);                                                                                        \
 }
+
+
+// Preprocessor stuff
+// --------------------------------------------------------------------------------------------------------------------
+
+#define A4_CAT(X, Y) __A4_CAT_1(X, Y)
+#define __A4_CAT_1(X, Y) __A4_CAT_2(X, Y)
+#define __A4_CAT_2(X, Y) X##Y

@@ -101,10 +101,10 @@ TEST(IntSet, CopyToPool) {
 }
 
 
-#define ADD_INTSET_DYNAMIC(lo, hi, in)                      \
-    for (size_t i = lo; i <= hi; ++i) results[i] = true;    \
-    A4_IntSet_AddInterval(set, lo, hi);                     \
-    ASSERT_EQ(A4_IntSet_NumIntervals(set), in);             \
+#define ADD_INTSET_DYNAMIC(lo, hi, in)                          \
+    for (size_t i = lo; i <= hi; ++i) results[i] = true;        \
+    ASSERT_EQ(A4_IntSet_AddInterval(set, lo, hi), A4_SUCCESS);  \
+    ASSERT_EQ(A4_IntSet_NumIntervals(set), in);                 \
     CHECK_INTSET_DYNAMIC();
 
 #define CHECK_INTSET_DYNAMIC() \

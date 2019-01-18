@@ -26,7 +26,7 @@ struct A4_IntSet {
     bool is_immutable;
 };
 
-A4_IntSet* A4_IntSet_New() {
+A4_IntSet* A4_IntSet_New(void) {
     A4_IntSet* set = malloc(sizeof(A4_IntSet));
     if (!set) return NULL;
 
