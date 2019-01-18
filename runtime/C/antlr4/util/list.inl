@@ -93,6 +93,7 @@
 #define A4_LIST_REMOVE_FRONT A4_CAT(A4_LIST_NAME, _RemoveFront)
 #define A4_LIST_REMOVE_BACK A4_CAT(A4_LIST_NAME, _RemoveBack)
 #define A4_LIST_COPY_TO_POOL A4_CAT(A4_LIST_NAME, _CopyToPool)
+#define A4_LIST_CLEAR A4_CAT(A4_LIST_NAME, _Clear)
 
 
 // List element API
@@ -213,6 +214,9 @@ static inline void A4_LIST_REMOVE_BACK(A4_LIST_NAME* list);
 static inline A4_LIST_PAYLOAD* A4_LIST_COPY_TO_POOL(const A4_LIST_NAME* set, A4_MemoryPool* pool);
 #endif
 
+/// Remove all elements from the list.
+static inline void A4_LIST_CLEAR(A4_LIST_NAME* list);
+
 
 // Implementation details
 // --------------------------------------------------------------------------------------------------------------------
@@ -230,7 +234,7 @@ static inline A4_LIST_ELEM* A4_NODISCARD A4_LIST_ELEM_NEW(A4_LIST_PAYLOAD payloa
 /// Call destructor on list payload. Used to negate effects of return and goto statements that may be encountered
 /// in dtor code.
 static inline void A4_LIST_ELEM_DELETE_PAYLOAD(A4_LIST_PAYLOAD payload) {
-    (void)payload;
+    // NOTE: if you're seeing warning about unused variable `payload`, it's most likely you've messed up A4_LIST_DTOR.
     A4_LIST_DTOR(payload);
 }
 
@@ -280,12 +284,7 @@ static inline A4_LIST_NAME* A4_NODISCARD A4_LIST_NEW(void) {
 }
 
 static inline void A4_LIST_DELETE(A4_LIST_NAME* list) {
-    if (!list) return;
-    A4_LIST_ELEM* head;
-    while ((head = list->head)) {
-        list->head = head->_next;
-        A4_LIST_ELEM_DELETE(head);
-    }
+    if (list) A4_LIST_CLEAR(list);
     free(list);
 }
 
@@ -341,8 +340,9 @@ static inline A4_ERRNO A4_LIST_INSERT_BEFORE(A4_LIST_NAME* list, A4_LIST_ELEM* i
             new_elem->_prev->_next = new_elem;
         else
             list->head = new_elem;
-        list->size += 1;
     }
+
+    list->size += 1;
 
     return A4_SUCCESS;
 }
@@ -371,18 +371,19 @@ static inline A4_ERRNO A4_LIST_INSERT_AFTER(A4_LIST_NAME* list, A4_LIST_ELEM* it
             new_elem->_next->_prev = new_elem;
         else
             list->tail = new_elem;
-        list->size += 1;
     }
+
+    list->size += 1;
 
     return A4_SUCCESS;
 }
 
 static inline A4_ERRNO A4_LIST_APPEND(A4_LIST_NAME* list, A4_LIST_PAYLOAD payload) {
-    return A4_LIST_INSERT_BEFORE(list, A4_LIST_HEAD(list), payload);
+    return A4_LIST_INSERT_AFTER(list, A4_LIST_TAIL(list), payload);
 }
 
 static inline A4_ERRNO A4_LIST_PREPEND(A4_LIST_NAME* list, A4_LIST_PAYLOAD payload) {
-    return A4_LIST_INSERT_AFTER(list, A4_LIST_TAIL(list), payload);
+    return A4_LIST_INSERT_BEFORE(list, A4_LIST_HEAD(list), payload);
 }
 
 static inline A4_ERRNO A4_LIST_INSERT_BEFORE_MOVE(A4_LIST_NAME* list, A4_LIST_ELEM* iter, A4_LIST_PAYLOAD payload) {
@@ -398,11 +399,11 @@ static inline A4_ERRNO A4_LIST_INSERT_AFTER_MOVE(A4_LIST_NAME* list, A4_LIST_ELE
 }
 
 static inline A4_ERRNO A4_LIST_APPEND_MOVE(A4_LIST_NAME* list, A4_LIST_PAYLOAD payload) {
-    return A4_LIST_INSERT_BEFORE_MOVE(list, A4_LIST_HEAD(list), payload);
+    return A4_LIST_INSERT_AFTER_MOVE(list, A4_LIST_TAIL(list), payload);
 }
 
 static inline A4_ERRNO A4_LIST_PREPEND_MOVE(A4_LIST_NAME* list, A4_LIST_PAYLOAD payload) {
-    return A4_LIST_INSERT_AFTER_MOVE(list, A4_LIST_TAIL(list), payload);
+    return A4_LIST_INSERT_BEFORE_MOVE(list, A4_LIST_HEAD(list), payload);
 }
 
 static inline A4_LIST_PAYLOAD A4_LIST_PAYLOAD_NODISCARD A4_LIST_POP(A4_LIST_NAME* list, A4_LIST_ELEM* iter) {
@@ -415,13 +416,13 @@ static inline A4_LIST_PAYLOAD A4_LIST_PAYLOAD_NODISCARD A4_LIST_POP(A4_LIST_NAME
     if (iter->_prev) {
         iter->_prev->_next = iter->_next;
     } else {
-        list->head = NULL;
+        list->head = iter->_next;
     }
 
     if (iter->_next) {
         iter->_next->_prev = iter->_prev;
     } else {
-        list->tail = NULL;
+        list->tail = iter->_prev;
     }
 
     free(iter);  // free list element without deleting payload
@@ -470,6 +471,19 @@ static inline A4_LIST_PAYLOAD* A4_LIST_COPY_TO_POOL(const A4_LIST_NAME* list, A4
 }
 #endif
 
+static inline void A4_LIST_CLEAR(A4_LIST_NAME* list) {
+    assert(list);
+
+    A4_LIST_ELEM* head;
+    while ((head = list->head)) {
+        list->head = head->_next;
+        A4_LIST_ELEM_DELETE(head);
+    }
+
+    list->size = 0;
+    list->head = list->tail = NULL;
+}
+
 #undef A4_LIST_NAME
 #undef A4_LIST_PAYLOAD
 #ifdef A4_LIST_DTOR
@@ -511,3 +525,4 @@ static inline A4_LIST_PAYLOAD* A4_LIST_COPY_TO_POOL(const A4_LIST_NAME* list, A4
 #undef A4_LIST_REMOVE_FRONT
 #undef A4_LIST_REMOVE_BACK
 #undef A4_LIST_COPY_TO_POOL
+#undef A4_LIST_CLEAR
