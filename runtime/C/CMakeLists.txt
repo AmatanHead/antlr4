@@ -50,6 +50,7 @@ ADD_EXECUTABLE(test
         test/memory/pool.cpp
         test/util/bitset.cpp
         test/util/intset.cpp
+        test/util/list.cpp
 )
 TARGET_LINK_LIBRARIES(test gtest gtest_main)
 TARGET_LINK_LIBRARIES(test cantlr4)
