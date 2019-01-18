@@ -21,7 +21,7 @@ typedef struct A4_IntSet A4_IntSet;
 // --------------------------------------------------------------------------------------------------------------------
 
 /// Allocate and init new set.
-A4_IntSet* A4_IntSet_New();
+A4_IntSet* A4_NODISCARD A4_IntSet_New();
 
 /// Delete set.
 void A4_IntSet_Delete(A4_IntSet* set);

@@ -23,7 +23,7 @@ struct A4_MemoryPoolPage {
 
 /// Take ownership over an old page and allocate a new one. If this function
 /// returns NULL, new page is not created and ownership over an old page is not taken.
-static inline struct A4_MemoryPoolPage* A4_MemoryPoolPage_New(struct A4_MemoryPoolPage* old, size_t size) {
+static inline struct A4_MemoryPoolPage* A4_NODISCARD A4_MemoryPoolPage_New(struct A4_MemoryPoolPage* old, size_t size) {
     struct A4_MemoryPoolPage* page = malloc(sizeof(struct A4_MemoryPoolPage) + size);
     if (!page) return NULL;
 
@@ -104,7 +104,7 @@ struct A4_MemoryPool {
     size_t next_page_size;
 };
 
-struct A4_MemoryPool* A4_MemoryPool_New(struct A4_MemoryPool_Options options) {
+struct A4_MemoryPool* A4_NODISCARD A4_MemoryPool_New(struct A4_MemoryPool_Options options) {
     struct A4_MemoryPool* pool = malloc(sizeof(struct A4_MemoryPool));
     if (!pool) return NULL;
 

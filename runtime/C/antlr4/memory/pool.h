@@ -47,8 +47,8 @@ inline A4_MemoryPool_Options A4_MemoryPool_Options_Default(void) {
 // --------------------------------------------------------------------------------------------------------------------
 
 /// Allocate and init new memory pool.
-A4_MemoryPool* A4_MemoryPool_New(A4_MemoryPool_Options options);
-inline A4_MemoryPool* A4_MemoryPool_NewDefault(void) {
+A4_MemoryPool* A4_NODISCARD A4_MemoryPool_New(A4_MemoryPool_Options options);
+inline A4_MemoryPool* A4_NODISCARD A4_MemoryPool_NewDefault(void) {
     return A4_MemoryPool_New(A4_MemoryPool_Options_Default());
 }
 

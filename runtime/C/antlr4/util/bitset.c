@@ -24,7 +24,7 @@ struct A4_BitSet {
     bool is_immutable;
 };
 
-A4_BitSet* A4_BitSet_New(void) {
+A4_BitSet* A4_NODISCARD A4_BitSet_New(void) {
     A4_BitSet* set = malloc(sizeof(A4_BitSet));
     if (!set) return NULL;
 
