@@ -240,3 +240,5 @@ TEST(List, CountedList) {
 
     CountedList_Delete(list);
 };
+
+// TODO: copy to pool test

@@ -102,13 +102,13 @@ TEST(IntSet, CopyToPool) {
 
 
 #define ADD_INTSET_DYNAMIC(lo, hi, in)                          \
-    for (size_t i = lo; i <= hi; ++i) results[i] = true;        \
+    for (uint32_t i = lo; i <= hi; ++i) results[i] = true;      \
     ASSERT_EQ(A4_IntSet_AddInterval(set, lo, hi), A4_SUCCESS);  \
     ASSERT_EQ(A4_IntSet_NumIntervals(set), in);                 \
     CHECK_INTSET_DYNAMIC();
 
 #define CHECK_INTSET_DYNAMIC() \
-    for (size_t i = 0; i < 100; ++i) ASSERT_EQ(A4_IntSet_Contains(set, i), results[i]);
+    for (uint32_t i = 0; i < 100; ++i) ASSERT_EQ(A4_IntSet_Contains(set, i), results[i]);
 
 
 TEST(IntSet, Intervals) {

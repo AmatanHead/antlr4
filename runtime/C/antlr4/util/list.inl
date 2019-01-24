@@ -102,7 +102,7 @@
 /// List element type.
 /// Contents of this struct shall only be changed via API methods below.
 a4_struct(A4_LIST_ELEM) {
-    A4_LIST_PAYLOAD _payload;
+    A4_LIST_PAYLOAD payload;
     struct A4_LIST_ELEM* _prev;
     struct A4_LIST_ELEM* _next;
 };
@@ -211,7 +211,7 @@ static inline void A4_LIST_REMOVE_BACK(A4_LIST_NAME* list);
 #ifdef A4_LIST_NO_DTOR
 /// Copy list payloads into an array allocated in a pool. Note that this function will only be defined on types with
 /// trivial destructors. Other types must be copied to pool manually to ensure lifetime correctness.
-static inline A4_LIST_PAYLOAD* A4_LIST_COPY_TO_POOL(const A4_LIST_NAME* set, A4_MemoryPool* pool);
+static inline A4_LIST_PAYLOAD* A4_LIST_COPY_TO_POOL(const A4_LIST_NAME* list, A4_MemoryPool* pool);
 #endif
 
 /// Remove all elements from the list.
@@ -227,7 +227,7 @@ static inline A4_LIST_ELEM* A4_NODISCARD A4_LIST_ELEM_NEW(A4_LIST_PAYLOAD payloa
     A4_LIST_ELEM* elem = (A4_LIST_ELEM*)malloc(sizeof(A4_LIST_ELEM));
     if (!elem) return NULL;
     elem->_next = elem->_prev = NULL;
-    elem->_payload = payload;
+    elem->payload = payload;
     return elem;
 }
 
@@ -240,7 +240,7 @@ static inline void A4_LIST_ELEM_DELETE_PAYLOAD(A4_LIST_PAYLOAD payload) {
 
 /// Destroy list element.
 static inline void A4_LIST_ELEM_DELETE(A4_LIST_ELEM* elem) {
-    if (elem) A4_LIST_ELEM_DELETE_PAYLOAD(elem->_payload);
+    if (elem) A4_LIST_ELEM_DELETE_PAYLOAD(elem->payload);
     free(elem);
 }
 
@@ -271,7 +271,7 @@ static inline A4_LIST_ELEM* A4_LIST_ELEM_PREVIOUS(const A4_LIST_ELEM* elem) {
 static inline A4_LIST_PAYLOAD A4_LIST_ELEM_PAYLOAD(const A4_LIST_ELEM* elem) {
     assert(elem);
 
-    return elem->_payload;
+    return elem->payload;
 }
 
 static inline A4_LIST_NAME* A4_NODISCARD A4_LIST_NEW(void) {
@@ -411,7 +411,7 @@ static inline A4_LIST_PAYLOAD A4_LIST_PAYLOAD_NODISCARD A4_LIST_POP(A4_LIST_NAME
     assert(iter);
     assert(list->size > 0);
 
-    A4_LIST_PAYLOAD payload = iter->_payload;
+    A4_LIST_PAYLOAD payload = iter->payload;
 
     if (iter->_prev) {
         iter->_prev->_next = iter->_next;
@@ -464,7 +464,8 @@ static inline A4_LIST_PAYLOAD* A4_LIST_COPY_TO_POOL(const A4_LIST_NAME* list, A4
     A4_LIST_ELEM* cur = list->head;
     size_t i = 0;
     while (cur) {
-        payloads[i++] = cur++->_payload;
+        payloads[i++] = cur->payload;
+        cur = cur->_next;
     }
 
     return payloads;
@@ -526,3 +527,9 @@ static inline void A4_LIST_CLEAR(A4_LIST_NAME* list) {
 #undef A4_LIST_REMOVE_BACK
 #undef A4_LIST_COPY_TO_POOL
 #undef A4_LIST_CLEAR
+
+
+#ifndef A4_LIST_FOREACH
+#define A4_LIST_FOREACH(N, list, elem) \
+    for (N##_Elem* elem = N##_Head(list); elem; elem = N##_Elem_Next(elem))
+#endif

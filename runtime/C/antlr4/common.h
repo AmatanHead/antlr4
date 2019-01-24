@@ -5,6 +5,8 @@
 #include <assert.h>
 
 
+
+
 // Error handling
 // --------------------------------------------------------------------------------------------------------------------
 
@@ -16,6 +18,12 @@ typedef int A4_Errno;
 
 /// Return code that indicates success.
 #define A4_SUCCESS 0
+
+/// ATN deserialization: invalid bytecode.
+#define A4_ATN_BC_INVALID 1001
+
+/// ATN deserialization: unsupported bytecode version.
+#define A4_ATN_BC_NOT_SUPPORTED 1002
 
 
 // Compiler-specific macros
@@ -99,10 +107,13 @@ typedef int A4_Errno;
 /// @param T derived struct type.
 /// @param ... list of type ids that can be stored in the derived struct type.
 #define A4_DOWNCAST_FUNC(N, B, T, ...)                                                                              \
-static inline struct T* N(struct B* ptr) {                                                                          \
-    if (ptr) assert(A4_OneOf(ptr->type, (int[]){ __VA_ARGS__ }, sizeof((int[]){ __VA_ARGS__ }) / sizeof(int)));     \
-    return (struct T*)(ptr);                                                                                        \
-}
+    static inline bool A4_Is##N(struct B* ptr) {                                                                    \
+        return A4_OneOf((int)ptr->type, (int[]){ __VA_ARGS__ }, sizeof((int[]){ __VA_ARGS__ }) / sizeof(int));      \
+    }                                                                                                               \
+    static inline struct T* A4_To##N(struct B* ptr) {                                                               \
+        if (ptr) assert(A4_Is##N(ptr));                                                                             \
+        return (struct T*)(ptr);                                                                                    \
+    }
 
 
 // Preprocessor stuff

@@ -19,7 +19,6 @@ typedef struct A4_ATNStarLoopBackState A4_ATNStarLoopBackState;
 typedef struct A4_ATNLoopEndState A4_ATNLoopEndState;
 
 typedef struct A4_ATNTransition A4_ATNTransition;
-typedef struct A4_ATNTransition A4_ATNTransition;
 typedef struct A4_ATNEpsilonTransition A4_ATNEpsilonTransition;
 typedef struct A4_ATNRangeTransition A4_ATNRangeTransition;
 typedef struct A4_ATNRuleTransition A4_ATNRuleTransition;

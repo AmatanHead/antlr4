@@ -24,6 +24,8 @@ a4_enum(A4_ATNTransitionType) {
     A4_ATNTT_NOT_SET = 8,
     A4_ATNTT_WILDCARD = 9,
     A4_ATNTT_PRECEDENCE = 10,
+
+    A4_ATNTT_MAX_VAL = A4_ATNTT_PRECEDENCE
 };
 
 /// Stringify type of ATN transition.
@@ -80,17 +82,17 @@ struct A4_ATNEpsilonTransition {
     A4_ATNTransition base;
 
     /// The rule index of a precedence rule for which this transition is returning from,
-    /// where the precedence value is 0; otherwise, -1.
-    int outermost_precedence_return;
+    /// where the precedence value is 0; otherwise, 0xFFFF.
+    uint16_t outermost_precedence_return;
 };
 
 /// A4_ATNTT_RANGE
 struct A4_ATNRangeTransition {
     A4_ATNTransition base;
 
-    int from;
+    uint16_t from;
 
-    int to;
+    uint16_t to;
 };
 
 /// A4_ATNTT_RULE
@@ -101,9 +103,9 @@ struct A4_ATNRuleTransition {
     A4_ATNState* follow_state;
 
     /// Ptr to the rule definition object for this rule ref.
-    int rule_index;
+    uint16_t rule_index;
 
-    int precedence;
+    uint16_t precedence;
 };
 
 /// A4_ATNTT_PREDICATE, A4_ATNTT_PRECEDENCE
@@ -126,7 +128,7 @@ struct A4_ATNPredicateTransition {
 struct A4_ATNPrecedencePredicateTransition {
     A4_ATNAbstractPredicateTransition base;
 
-    int precedence;
+    uint16_t precedence;
 };
 
 /// A4_ATNTT_ATOM
@@ -134,16 +136,16 @@ struct A4_ATNAtomTransition {
     A4_ATNTransition base;
 
     /// The token type or character value; or, signifies special label.
-    int label;
+    uint16_t label;
 };
 
 /// A4_ATNTT_ACTION
 struct A4_ATNActionTransition {
     A4_ATNTransition base;
 
-    int rule_index;
+    uint16_t rule_index;
 
-    int action_index;
+    uint16_t action_index;
 
     bool is_ctx_dependent;
 };
@@ -165,14 +167,29 @@ struct A4_ATNWildcardTransition {
     A4_ATNTransition base;
 };
 
-A4_DOWNCAST_FUNC(A4_ToEpsilonTransition, A4_ATNTransition, A4_ATNEpsilonTransition, A4_ATNTT_EPSILON)
-A4_DOWNCAST_FUNC(A4_ToRangeTransition, A4_ATNTransition, A4_ATNRangeTransition, A4_ATNTT_RANGE)
-A4_DOWNCAST_FUNC(A4_ToRuleTransition, A4_ATNTransition, A4_ATNRuleTransition, A4_ATNTT_RULE)
-A4_DOWNCAST_FUNC(A4_ToAbstractPredicateTransition, A4_ATNTransition, A4_ATNAbstractPredicateTransition, A4_ATNTT_PREDICATE, A4_ATNTT_PRECEDENCE)
-A4_DOWNCAST_FUNC(A4_ToPredicateTransition, A4_ATNTransition, A4_ATNPredicateTransition, A4_ATNTT_PREDICATE)
-A4_DOWNCAST_FUNC(A4_ToPrecedencePredicateTransition, A4_ATNTransition, A4_ATNPrecedencePredicateTransition, A4_ATNTT_PRECEDENCE)
-A4_DOWNCAST_FUNC(A4_ToAtomTransition, A4_ATNTransition, A4_ATNAtomTransition, A4_ATNTT_ATOM)
-A4_DOWNCAST_FUNC(A4_ToActionTransition, A4_ATNTransition, A4_ATNActionTransition, A4_ATNTT_ACTION)
-A4_DOWNCAST_FUNC(A4_ToSetTransition, A4_ATNTransition, A4_ATNSetTransition, A4_ATNTT_SET, A4_ATNTT_NOT_SET)
-A4_DOWNCAST_FUNC(A4_ToNotSetTransition, A4_ATNTransition, A4_ATNNotSetTransition, A4_ATNTT_NOT_SET)
-A4_DOWNCAST_FUNC(A4_ToWildcardTransition, A4_ATNTransition, A4_ATNWildcardTransition, A4_ATNTT_WILDCARD)
+A4_DOWNCAST_FUNC(EpsilonTransition, A4_ATNTransition, A4_ATNEpsilonTransition, A4_ATNTT_EPSILON)
+A4_DOWNCAST_FUNC(RangeTransition, A4_ATNTransition, A4_ATNRangeTransition, A4_ATNTT_RANGE)
+A4_DOWNCAST_FUNC(RuleTransition, A4_ATNTransition, A4_ATNRuleTransition, A4_ATNTT_RULE)
+A4_DOWNCAST_FUNC(AbstractPredicateTransition, A4_ATNTransition, A4_ATNAbstractPredicateTransition, A4_ATNTT_PREDICATE, A4_ATNTT_PRECEDENCE)
+A4_DOWNCAST_FUNC(PredicateTransition, A4_ATNTransition, A4_ATNPredicateTransition, A4_ATNTT_PREDICATE)
+A4_DOWNCAST_FUNC(PrecedencePredicateTransition, A4_ATNTransition, A4_ATNPrecedencePredicateTransition, A4_ATNTT_PRECEDENCE)
+A4_DOWNCAST_FUNC(AtomTransition, A4_ATNTransition, A4_ATNAtomTransition, A4_ATNTT_ATOM)
+A4_DOWNCAST_FUNC(ActionTransition, A4_ATNTransition, A4_ATNActionTransition, A4_ATNTT_ACTION)
+A4_DOWNCAST_FUNC(SetTransition, A4_ATNTransition, A4_ATNSetTransition, A4_ATNTT_SET, A4_ATNTT_NOT_SET)
+A4_DOWNCAST_FUNC(NotSetTransition, A4_ATNTransition, A4_ATNNotSetTransition, A4_ATNTT_NOT_SET)
+A4_DOWNCAST_FUNC(WildcardTransition, A4_ATNTransition, A4_ATNWildcardTransition, A4_ATNTT_WILDCARD)
+
+/// Allocate new transition based on its type. Returns NULL when trying to allocate A4_ATNST_INVALID state.
+A4_ATNTransition* A4_NODISCARD A4_ATNTransition_New(A4_MemoryPool* pool, A4_ATNTransitionType type,
+    A4_ATN* atn, A4_ATNState* target, uint16_t arg1, uint16_t arg2, uint16_t arg3);
+
+A4_ATNEpsilonTransition* A4_NODISCARD A4_ATNEpsilonTransition_New(A4_MemoryPool* pool, A4_ATNState* target);
+A4_ATNRangeTransition* A4_NODISCARD A4_ATNRangeTransition_New(A4_MemoryPool* pool, A4_ATNState* target, uint16_t from, uint16_t to);
+A4_ATNRuleTransition* A4_NODISCARD A4_ATNRuleTransition_New(A4_MemoryPool* pool, A4_ATNRuleStartState* rule_start, uint16_t rule_index, uint16_t precedence, A4_ATNState* follow_state);
+A4_ATNPredicateTransition* A4_NODISCARD A4_ATNPredicateTransition_New(A4_MemoryPool* pool, A4_ATNState* target, uint16_t rule_index, uint16_t pred_index, bool is_ctx_dependent);
+A4_ATNPrecedencePredicateTransition* A4_NODISCARD A4_ATNPrecedencePredicateTransition_New(A4_MemoryPool* pool, A4_ATNState* target, uint16_t precedence);
+A4_ATNAtomTransition* A4_NODISCARD A4_ATNAtomTransition_New(A4_MemoryPool* pool, A4_ATNState* target, uint16_t label);
+A4_ATNActionTransition* A4_NODISCARD A4_ATNActionTransition_New(A4_MemoryPool* pool, A4_ATNState* target, uint16_t rule_index, uint16_t action_index, bool is_ctx_dependent);
+A4_ATNSetTransition* A4_NODISCARD A4_ATNSetTransition_New(A4_MemoryPool* pool, A4_ATNState* target);
+A4_ATNNotSetTransition* A4_NODISCARD A4_ATNNotSetTransition_New(A4_MemoryPool* pool, A4_ATNState* target);
+A4_ATNWildcardTransition* A4_NODISCARD A4_ATNWildcardTransition_New(A4_MemoryPool* pool, A4_ATNState* target);

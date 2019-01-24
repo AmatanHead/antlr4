@@ -48,7 +48,7 @@ static inline size_t A4_MemoryPoolPage_Size(const struct A4_MemoryPoolPage* page
     if (!page)
         return 0;
     else
-        return page->current + page->left - (const char*)(page);
+        return (size_t) (page->current + page->left - (const char*)(page));
 }
 
 /// Get number of bytes left on this page.
@@ -76,7 +76,7 @@ static inline void* A4_MemoryPoolPage_Alloc(struct A4_MemoryPoolPage* page, size
 static inline void* A4_MemoryPoolPage_AllocAligned(struct A4_MemoryPoolPage* page, size_t size, size_t align) {
     if (!page) return NULL;
 
-    size_t pad = A4_AlignUpMem(page->current, align) - page->current;
+    size_t pad = (size_t) (A4_AlignUpMem(page->current, align) - page->current);
 
     void* ret = A4_MemoryPoolPage_Alloc(page, size + pad);
 

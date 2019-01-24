@@ -1,10 +1,24 @@
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1)
 PROJECT(cantlr4)
 
+SET(DEFAULT_FLAGS "\
+    -Wall\
+    -Wextra\
+    -Wshadow\
+    -Wconversion\
+    -Wswitch-default\
+    -Wswitch-enum\
+    -Wunreachable-code\
+    -Wwrite-strings\
+    -Wundef\
+    -Wno-unused-function\
+    -Werror\
+")
+
 SET(CMAKE_C_STANDARD 11)
-SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -Wshadow -Wno-unused-function -Werror")
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${DEFAULT_FLAGS}")
 SET(CMAKE_CXX_STANDARD 17)
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wshadow -Wno-unused-function -Werror")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${DEFAULT_FLAGS}")
 
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/externals/sanitizers-cmake/cmake" ${CMAKE_MODULE_PATH})
 
@@ -42,10 +56,14 @@ ADD_LIBRARY(cantlr4
         antlr4/util/intset.h
         antlr4/util/one_of.c
         antlr4/util/one_of.h
+        antlr4/util/uuid.c
+        antlr4/util/uuid.h
 )
 ADD_SANITIZERS(cantlr4)
 
 ADD_EXECUTABLE(test
+        test/atn/atn.cpp
+
         test/memory/align.cpp
         test/memory/pool.cpp
 
