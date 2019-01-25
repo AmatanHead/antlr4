@@ -25,6 +25,9 @@ typedef int A4_Errno;
 /// ATN deserialization: unsupported bytecode version.
 #define A4_ATN_BC_NOT_SUPPORTED 1002
 
+/// ATN correctness check failed.
+#define A4_ATN_INVALID 1003
+
 
 // Compiler-specific macros
 // --------------------------------------------------------------------------------------------------------------------

@@ -71,6 +71,7 @@ bool A4_ATN_FeatureSupported(const A4_UUID version, const A4_UUID feature, const
 }
 
 static A4_ERRNO ReadSets(const uint16_t* bc_end, uint16_t** bcc_state, uint16_t** bco_state, IntSetList* res, bool utf32, A4_MemoryPool* pool);
+static A4_ERRNO CheckATN(A4_ATN* atn);
 
 A4_ERRNO A4_ATN_Load(A4_ATN** result, A4_MemoryPool* pool, const uint16_t* bc_raw, size_t bc_size) {
     A4_Errno err = A4_SUCCESS;
@@ -345,13 +346,13 @@ A4_ERRNO A4_ATN_Load(A4_ATN** result, A4_MemoryPool* pool, const uint16_t* bc_ra
         if (src >= atn->states.size) ERR(A4_ATN_BC_INVALID);
         uint16_t trg = *(bco + 1);
         if (trg >= atn->states.size) ERR(A4_ATN_BC_INVALID);
-        A4_ATNTransitionType ttype = (A4_ATNTransitionType) *(bco + 2);
-        if (ttype > A4_ATNTT_MAX_VAL) ERR(A4_ATN_BC_INVALID);
+        A4_ATNTransitionType type = (A4_ATNTransitionType) *(bco + 2);
+        if (type > A4_ATNTT_MAX_VAL) ERR(A4_ATN_BC_INVALID);
         uint16_t arg1 = *(bco + 3);
         uint16_t arg2 = *(bco + 4);
         uint16_t arg3 = *(bco + 5);
 
-        A4_ATNTransition* transition = A4_ATNTransition_New(pool, ttype, atn, atn->states.data[trg], arg1, arg2, arg3);
+        A4_ATNTransition* transition = A4_ATNTransition_New(pool, type, atn, atn->states.data[trg], arg1, arg2, arg3);
 
         if (transition->type == A4_ATNTT_SET || transition->type == A4_ATNTT_NOT_SET) {
             if (arg1 >= IntSetList_Size(sets)) ERR(A4_ATN_BC_INVALID);
@@ -493,6 +494,8 @@ A4_ERRNO A4_ATN_Load(A4_ATN** result, A4_MemoryPool* pool, const uint16_t* bc_ra
         }
     }
 
+    CALL(CheckATN(atn));
+
     *result = atn;
 
 cleanup:
@@ -573,4 +576,67 @@ cleanup:
     *bco_state = bco;
     A4_IntSet_Delete(set);
     return err;
+}
+
+#define COND(x) do { if (!(x)) return A4_ATN_INVALID; } while (0)
+
+static A4_ERRNO CheckATN(A4_ATN* atn) {
+    for (size_t i = 0; i < atn->states.size; ++i) {
+        A4_ATNState* state = atn->states.data[i];
+
+        if (!state) continue;
+
+        COND(state->epsilon_only_transitions || state->transitions.size <= 1);
+
+        if (A4_IsPlusBlockStartState(state)) {
+            COND(A4_ToPlusBlockStartState(state)->loopback_state != NULL);
+        }
+
+        if (A4_IsStarLoopEntryState(state)) {
+            A4_ATNStarLoopEntryState* star_loop_entry_state = A4_ToStarLoopEntryState(state);
+
+            COND(star_loop_entry_state->loopback_state != NULL);
+            COND(star_loop_entry_state->base.base.transitions.size == 2);
+
+            if (A4_IsStarBlockStartState(star_loop_entry_state->base.base.transitions.data[0]->target)) {
+                COND(A4_IsLoopEndState(star_loop_entry_state->base.base.transitions.data[1]->target));
+                COND(!star_loop_entry_state->base.non_greedy);
+            } else if (A4_IsLoopEndState(star_loop_entry_state->base.base.transitions.data[0]->target)) {
+                COND(A4_IsStarBlockStartState(star_loop_entry_state->base.base.transitions.data[1]->target));
+                COND(star_loop_entry_state->base.non_greedy);
+            } else {
+                COND(0);
+            }
+        }
+
+        if (A4_IsStarLoopBackState(state)) {
+            COND(state->transitions.size == 1);
+            COND(A4_IsStarLoopEntryState(state->transitions.data[0]->target));
+        }
+
+        if (A4_IsLoopEndState(state)) {
+            COND(A4_ToLoopEndState(state)->loopback_state != NULL);
+        }
+
+        if (A4_IsRuleStartState(state)) {
+            COND(A4_ToRuleStartState(state)->stop_state != NULL);
+        }
+
+        if (A4_IsBlockStartStateBase(state)) {
+            COND(A4_ToBlockStartStateBase(state)->end_state != NULL);
+        }
+
+        if (A4_IsBlockEndState(state)) {
+            COND(A4_ToBlockEndState(state)->start_state != NULL);
+        }
+
+        if (A4_IsDecisionState(state)) {
+            A4_ATNDecisionState* decision_state = A4_ToDecisionState(state);
+            COND(decision_state->base.transitions.size <= 1 || decision_state->decision >= 0);
+        } else {
+            COND(state->transitions.size <= 1 || A4_IsRuleStopState(state));
+        }
+    }
+
+    return A4_SUCCESS;
 }
