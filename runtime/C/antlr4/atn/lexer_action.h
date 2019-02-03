@@ -28,8 +28,10 @@ a4_enum(A4_LexerActionType) {
     A4_LAT_MAX_VAL = A4_LAT_TYPE
 };
 
-/// Represents a single action which can be executed following the successful match of a lexer rule.
-/// Lexer actions are used for both embedded action syntax and ANTLR 4's new lexer command syntax.
+/**
+ * Represents a single action which can be executed following the successful match of a lexer rule.
+ * Lexer actions are used for both embedded action syntax and ANTLR 4's new lexer command syntax.
+ */
 struct A4_LexerAction {
     A4_LexerActionType type;
 };

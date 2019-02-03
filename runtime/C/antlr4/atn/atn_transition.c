@@ -1,6 +1,7 @@
 #include "atn_transition.h"
 #include "atn_state.h"
 #include "atn.h"
+#include "../token.h"
 
 const char* A4_ATNTransitionTypeName(enum A4_ATNTransitionType type) {
     switch (type) {
@@ -30,7 +31,7 @@ A4_ATNTransition* A4_NODISCARD A4_ATNTransition_New(A4_MemoryPool* pool, A4_ATNT
             return (A4_ATNTransition*) A4_ATNEpsilonTransition_New(pool, target);
         case A4_ATNTT_RANGE:
             if (arg3 != 0) {
-                return (A4_ATNTransition*) A4_ATNRangeTransition_New(pool, target, 0xFFFF, arg2);
+                return (A4_ATNTransition*) A4_ATNRangeTransition_New(pool, target, A4_TOKEN_EOF, arg2);
             } else {
                 return (A4_ATNTransition*) A4_ATNRangeTransition_New(pool, target, arg1, arg2);
             }
@@ -42,7 +43,7 @@ A4_ATNTransition* A4_NODISCARD A4_ATNTransition_New(A4_MemoryPool* pool, A4_ATNT
             return (A4_ATNTransition*) A4_ATNPredicateTransition_New(pool, target, arg1, arg2, arg3 != 0);
         case A4_ATNTT_ATOM:
             if (arg3 != 0) {
-                return (A4_ATNTransition*) A4_ATNAtomTransition_New(pool, target, 0xFFFF);
+                return (A4_ATNTransition*) A4_ATNAtomTransition_New(pool, target, A4_TOKEN_EOF);
             } else {
                 return (A4_ATNTransition*) A4_ATNAtomTransition_New(pool, target, arg1);
             }

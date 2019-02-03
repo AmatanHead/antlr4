@@ -29,6 +29,8 @@ ADD_LIBRARY(cantlr4
         antlr4/antlr4.h
         antlr4/common.h
         antlr4/common.c
+        antlr4/token.c
+        antlr4/token.h
 
         antlr4/atn/fwd.h
         antlr4/atn/atn.c
