@@ -42,6 +42,8 @@ typedef int A4_Errno;
 #    define A4_NODISCARD __attribute__((warn_unused_result))
 #elif  defined(_MSC_VER)
 #    define A4_NODISCARD _Check_return_
+#else
+#    define A4_NODISCARD
 #endif
 
 
