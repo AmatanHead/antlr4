@@ -403,7 +403,7 @@ public abstract class Target {
 	 *  just use T.java as output regardless of type.
 	 */
 	public String getRecognizerFileName(boolean header) {
-		ST extST = getTemplates().getInstanceOf("codeFileExtension");
+		ST extST = getTemplates().getInstanceOf(needsHeader() && header ? "headerFileExtension" : "codeFileExtension");
 		String recognizerName = gen.g.getRecognizerName();
 		return recognizerName+extST.render();
 	}
@@ -413,7 +413,7 @@ public abstract class Target {
  	 */
 	public String getListenerFileName(boolean header) {
 		assert gen.g.name != null;
-		ST extST = getTemplates().getInstanceOf("codeFileExtension");
+		ST extST = getTemplates().getInstanceOf(needsHeader() && header ? "headerFileExtension" : "codeFileExtension");
 		String listenerName = gen.g.name + "Listener";
 		return listenerName+extST.render();
 	}
@@ -423,7 +423,7 @@ public abstract class Target {
  	 */
 	public String getVisitorFileName(boolean header) {
 		assert gen.g.name != null;
-		ST extST = getTemplates().getInstanceOf("codeFileExtension");
+		ST extST = getTemplates().getInstanceOf(needsHeader() && header ? "headerFileExtension" : "codeFileExtension");
 		String listenerName = gen.g.name + "Visitor";
 		return listenerName+extST.render();
 	}
@@ -433,7 +433,7 @@ public abstract class Target {
  	 */
 	public String getBaseListenerFileName(boolean header) {
 		assert gen.g.name != null;
-		ST extST = getTemplates().getInstanceOf("codeFileExtension");
+		ST extST = getTemplates().getInstanceOf(needsHeader() && header ? "headerFileExtension" : "codeFileExtension");
 		String listenerName = gen.g.name + "BaseListener";
 		return listenerName+extST.render();
 	}
@@ -443,7 +443,7 @@ public abstract class Target {
  	 */
 	public String getBaseVisitorFileName(boolean header) {
 		assert gen.g.name != null;
-		ST extST = getTemplates().getInstanceOf("codeFileExtension");
+		ST extST = getTemplates().getInstanceOf(needsHeader() && header ? "headerFileExtension" : "codeFileExtension");
 		String listenerName = gen.g.name + "BaseVisitor";
 		return listenerName+extST.render();
 	}
