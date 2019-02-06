@@ -29,6 +29,10 @@ ADD_LIBRARY(cantlr4
         antlr4/antlr4.h
         antlr4/common.h
         antlr4/common.c
+        antlr4/encoding.c
+        antlr4/encoding.h
+        antlr4/error.c
+        antlr4/error.h
         antlr4/token.c
         antlr4/token.h
 
@@ -60,11 +64,13 @@ ADD_LIBRARY(cantlr4
         antlr4/util/one_of.h
         antlr4/util/uuid.c
         antlr4/util/uuid.h
-        antlr4/atn/simulator.c antlr4/atn/simulator.h)
+)
 ADD_SANITIZERS(cantlr4)
 
 ADD_EXECUTABLE(test
         test/atn/atn.cpp
+
+        test/lexer/lexer.c
 
         test/memory/align.cpp
         test/memory/pool.cpp
