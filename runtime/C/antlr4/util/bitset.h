@@ -22,7 +22,7 @@ typedef struct A4_BitSet A4_BitSet;
 // --------------------------------------------------------------------------------------------------------------------
 
 /// Allocate and init new set.
-A4_BitSet* A4_NODISCARD A4_BitSet_New();
+A4_BitSet* A4_NODISCARD A4_BitSet_New(void);
 
 /// Delete set.
 void A4_BitSet_Delete(A4_BitSet* set);

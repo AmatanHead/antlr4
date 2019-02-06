@@ -1,5 +1,5 @@
 /**
- * Generic list. Including this file generated a list struct and bunch of API methods based on special macro values.
+ * Generic list. Including this file generates a list struct and bunch of API methods based on special macro values.
  *
  * Usage:
  *
