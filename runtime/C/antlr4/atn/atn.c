@@ -1,7 +1,7 @@
 #include "atn.h"
 
-#include "atn_state.h"
-#include "atn_transition.h"
+#include "state.h"
+#include "transition.h"
 #include "lexer_action.h"
 #include "../util/uuid.h"
 

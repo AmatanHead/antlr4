@@ -1,4 +1,4 @@
-#include "atn_state.h"
+#include "state.h"
 
 const char* A4_ATNStateTypeName(enum A4_ATNStateType type) {
     switch (type) {

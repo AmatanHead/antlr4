@@ -1,5 +1,5 @@
-#include "atn_transition.h"
-#include "atn_state.h"
+#include "transition.h"
+#include "state.h"
 #include "atn.h"
 #include "../token.h"
 

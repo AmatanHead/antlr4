@@ -37,10 +37,10 @@ ADD_LIBRARY(cantlr4
         antlr4/atn/atn.h
         antlr4/atn/atn_config.c
         antlr4/atn/atn_config.h
-        antlr4/atn/atn_state.c
-        antlr4/atn/atn_state.h
-        antlr4/atn/atn_transition.c
-        antlr4/atn/atn_transition.h
+        antlr4/atn/state.c
+        antlr4/atn/state.h
+        antlr4/atn/transition.c
+        antlr4/atn/transition.h
         antlr4/atn/lexer_action.c
         antlr4/atn/lexer_action.h
 
@@ -60,7 +60,7 @@ ADD_LIBRARY(cantlr4
         antlr4/util/one_of.h
         antlr4/util/uuid.c
         antlr4/util/uuid.h
-)
+        antlr4/atn/simulator.c antlr4/atn/simulator.h)
 ADD_SANITIZERS(cantlr4)
 
 ADD_EXECUTABLE(test
