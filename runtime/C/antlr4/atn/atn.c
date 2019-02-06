@@ -43,7 +43,7 @@ a4_struct(EndStateNumber) {
 #include "../util/list.inl"
 
 
-#define ERR(x) { err = x; goto cleanup; }
+#define ERR(x) do { err = x; goto cleanup; } while (0)
 #define CHCK(x) do { if (bcc + (x) > bc_end) ERR(A4_ATN_BC_INVALID); } while (0)
 #define READ(x) do { CHCK(x); bco = bcc; bcc += (x); } while (0)
 #define CALL(x) do { err = (x); if (err != A4_SUCCESS) ERR(err); } while (0)
@@ -278,7 +278,7 @@ A4_ERRNO A4_ATN_Load(A4_ATN** result, A4_MemoryPool* pool, const uint16_t* bc_ra
             uint16_t token_type = *bco;  // 0xFFFF = EOF
 
             atn->rule_to_token_type[i] = token_type;
-        };
+        }
     }
 
     atn->rule_to_stop_state = A4_POOL_CALLOC(pool, A4_ATNRuleStopState*, num_rules);

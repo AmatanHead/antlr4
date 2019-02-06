@@ -74,5 +74,5 @@ void* A4_MemoryPool_Malloc(A4_MemoryPool* pool, size_t size);
 void* A4_MemoryPool_MallocAligned(A4_MemoryPool* pool, size_t size, size_t align);
 
 /// Allocate object of the given type.
-#define A4_POOL_ALLOC(pool, T) (T*)A4_MemoryPool_MallocAligned((pool), sizeof(T), alignof(T));
-#define A4_POOL_CALLOC(pool, T, size) (T*)A4_MemoryPool_MallocAligned((pool), sizeof(T) * size, alignof(T));
+#define A4_POOL_ALLOC(pool, T) (T*)A4_MemoryPool_MallocAligned((pool), sizeof(T), alignof(T))
+#define A4_POOL_CALLOC(pool, T, size) (T*)A4_MemoryPool_MallocAligned((pool), sizeof(T) * size, alignof(T))
