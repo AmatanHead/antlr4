@@ -62,6 +62,8 @@ ADD_LIBRARY(cantlr4
         antlr4/util/intset.h
         antlr4/util/one_of.c
         antlr4/util/one_of.h
+        antlr4/util/utf.c
+        antlr4/util/utf.h
         antlr4/util/uuid.c
         antlr4/util/uuid.h
 )
@@ -78,6 +80,7 @@ ADD_EXECUTABLE(test
         test/util/bitset.cpp
         test/util/intset.cpp
         test/util/list.cpp
+        test/util/utf.cpp
         test/util/uuid.cpp
 )
 TARGET_LINK_LIBRARIES(test gtest gtest_main)

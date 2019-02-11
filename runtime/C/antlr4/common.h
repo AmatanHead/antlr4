@@ -3,6 +3,7 @@
 #include "util/one_of.h"
 
 #include <assert.h>
+#include <stdint.h>
 
 
 // Error handling
@@ -44,6 +45,14 @@ typedef int A4_Errno;
 #    define A4_NODISCARD _Check_return_
 #else
 #    define A4_NODISCARD
+#endif
+
+#if defined(__GNUC__)
+#   define A4_LIKELY(c) __builtin_expect(!!(c), 1)
+#   define A4_UNLIKELY(c) __builtin_expect(!!(c), 0)
+#else
+#   define A4_LIKELY(c)
+#   define A4_UNLIKELY(c)
 #endif
 
 
