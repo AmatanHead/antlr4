@@ -5,8 +5,6 @@
 #include <memory.h>
 #include <stdalign.h>
 #include <stddef.h>
-#include <errno.h>
-#include <stdio.h>
 
 
 // Pool page implementation
@@ -139,7 +137,7 @@ static A4_ERRNO A4_MemoryPool_AddPageFor(struct A4_MemoryPool* pool, size_t size
         page_size = size;
 
     struct A4_MemoryPoolPage* page = A4_MemoryPoolPage_New(pool->page, page_size);
-    if (!page) return ENOMEM;
+    if (!page) return A4_E_MEMORY;
 
     pool->allocated += A4_MemoryPoolPage_Size(pool->page);
     pool->waste += A4_MemoryPoolPage_Left(pool->page);

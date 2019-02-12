@@ -59,7 +59,6 @@
 #include "../memory/pool.h"
 
 #include <stddef.h>
-#include <errno.h>
 
 #define A4_LIST_ELEM A4_CAT(A4_LIST_NAME, _Elem)
 #define A4_LIST_ELEM_NEW A4_CAT(_, A4_CAT(A4_LIST_NAME, _Elem_New))
@@ -322,7 +321,7 @@ static inline A4_ERRNO A4_LIST_INSERT_BEFORE(A4_LIST_NAME* list, A4_LIST_ELEM* i
     assert(list);
 
     A4_LIST_ELEM* new_elem = A4_LIST_ELEM_NEW(payload);
-    if (!new_elem) return ENOMEM;
+    if (!new_elem) return A4_E_MEMORY;
 
     if (!iter) {
         assert(A4_LIST_EMPTY(list));
@@ -353,7 +352,7 @@ static inline A4_ERRNO A4_LIST_INSERT_AFTER(A4_LIST_NAME* list, A4_LIST_ELEM* it
     assert(list);
 
     A4_LIST_ELEM* new_elem = A4_LIST_ELEM_NEW(payload);
-    if (!new_elem) return ENOMEM;
+    if (!new_elem) return A4_E_MEMORY;
 
     if (!iter) {
         assert(A4_LIST_EMPTY(list));

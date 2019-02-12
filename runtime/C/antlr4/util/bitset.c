@@ -2,7 +2,6 @@
 
 #include <assert.h>
 #include <memory.h>
-#include <errno.h>
 
 
 // Set implementation
@@ -82,7 +81,7 @@ static inline A4_ERRNO A4_BitSet_Resize(A4_BitSet* set, const size_t size) {
     if (set->bits.size >= size) return A4_SUCCESS;
 
     A4_BitSet_ElemType* new_data = realloc(set->bits.data, sizeof(A4_BitSet_ElemType) * size);
-    if (!new_data) return ENOMEM;
+    if (!new_data) return A4_E_MEMORY;
 
     memset(new_data + set->bits.size, 0, sizeof(A4_BitSet_ElemType) * (size - set->bits.size));
 

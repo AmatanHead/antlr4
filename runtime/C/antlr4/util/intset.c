@@ -2,7 +2,6 @@
 
 #include <assert.h>
 #include <memory.h>
-#include <errno.h>
 #include <printf.h>
 
 
@@ -129,7 +128,7 @@ A4_ERRNO A4_IntSet_InsertInterval(A4_IntSet* set, size_t where, A4_IntSet_Interv
 
         size_t new_capacity = set->intervals.size + 5;
         A4_IntSet_Interval* new_data = realloc(set->intervals.data, sizeof(A4_IntSet_Interval) * new_capacity);
-        if (!new_data) return ENOMEM;
+        if (!new_data) return A4_E_MEMORY;
 
         set->intervals.data = new_data;
         set->intervals.capacity = new_capacity;

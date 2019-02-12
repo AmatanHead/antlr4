@@ -443,7 +443,7 @@ TEST(ATN, ReadBytecode) {
     ASSERT_NE(pool, nullptr);
 
     ASSERT_EQ(A4_ATN_Load(&atn, pool, atn1, sizeof(atn1) / sizeof(uint16_t)), A4_SUCCESS);
-    ASSERT_EQ(A4_ATN_Load(&atn, pool, atn1, 0), A4_ATN_BC_INVALID);
+    ASSERT_EQ(A4_ATN_Load(&atn, pool, atn1, 0), A4_E_BC_INVALID);
 
     A4_MemoryPool_Delete(pool);
 }

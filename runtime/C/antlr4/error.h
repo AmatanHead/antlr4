@@ -2,8 +2,6 @@
 
 #include "common.h"
 
-#include <stdint.h>
-
 
 /**
  * Lexing/parsing error.

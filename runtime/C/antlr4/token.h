@@ -2,8 +2,6 @@
 
 #include "common.h"
 
-#include <stdint.h>
-
 
 #define A4_TOKEN_INVALID 0
 #define A4_MIN_USER_TOKEN_TYPE 1

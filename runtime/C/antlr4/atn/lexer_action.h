@@ -6,7 +6,6 @@
 #include "fwd.h"
 
 #include <stdbool.h>
-#include <stdint.h>
 
 
 // Lexer actions

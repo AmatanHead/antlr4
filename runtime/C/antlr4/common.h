@@ -15,17 +15,20 @@ typedef int A4_Errno;
 /// Should be used as function result type to enforce error checking.
 #define A4_ERRNO A4_Errno A4_NODISCARD
 
-/// Return code that indicates success.
-#define A4_SUCCESS 0
+#define A4_SUCCESS              0               ///< Return code that indicates success.
 
-/// ATN deserialization: invalid bytecode.
-#define A4_ATN_BC_INVALID 1001
+#define A4_E_SYSTEM             1000            ///< System errors.
+#define A4_E_MEMORY             1001            ///< Memory allocation failure.
+#define A4_E_FORMAT             1002            ///< Printf formatting error.
 
-/// ATN deserialization: unsupported bytecode version.
-#define A4_ATN_BC_NOT_SUPPORTED 1002
+#define A4_E_INPUT              2000            ///< Input read and encoding/decoding errors.
+#define A4_E_INVALID_ENCODING   2001            ///< UTF decoding error. Input string is invalid.
+#define A4_E_INPUT_TOO_LARGE    2002            ///< Input string is too large.
 
-/// ATN correctness check failed.
-#define A4_ATN_INVALID 1003
+#define A4_E_ATN                3000            ///< ATN deserialization errors.
+#define A4_E_BC_INVALID         3001            ///< Invalid bytecode.
+#define A4_E_BC_NOT_SUPPORTED   3002            ///< Unsupported bytecode version.
+#define A4_E_ATN_INVALID        3003            ///< ATN correctness check failed.
 
 
 // Compiler-specific macros
