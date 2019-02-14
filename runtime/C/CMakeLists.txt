@@ -53,9 +53,13 @@ ADD_LIBRARY(cantlr4
         antlr4/atn/transition.h
         antlr4/atn/lexer_action.c
         antlr4/atn/lexer_action.h
+        antlr4/atn/lexer_simulator.c
+        antlr4/atn/lexer_simulator.h
 
         antlr4/dfa/dfa.c
         antlr4/dfa/dfa.h
+        antlr4/dfa/state.c
+        antlr4/dfa/state.h
 
         antlr4/memory/align.c
         antlr4/memory/align.h

@@ -2,6 +2,11 @@
 
 #include "../common.h"
 
+struct A4_Lexer;
+
+typedef void(A4_ActionExecutor)(struct A4_Lexer* lexer, uint16_t rule_index, uint16_t action_index);
+typedef bool(A4_PredicateExecutor)(struct A4_Lexer* lexer, uint16_t rule_index, uint16_t predicate_index);
+
 typedef struct A4_ATNState A4_ATNState;
 typedef struct A4_ATNBasicState A4_ATNBasicState;
 typedef struct A4_ATNRuleStartState A4_ATNRuleStartState;
