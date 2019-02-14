@@ -6,8 +6,8 @@ extern "C" {
 
 #include "common.h"
 #include "encoding.h"
+#include "lexing_error.h"
 #include "token.h"
-#include "error.h"
 
 #include "memory/pool.h"
 

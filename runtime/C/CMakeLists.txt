@@ -31,8 +31,8 @@ ADD_LIBRARY(cantlr4
         antlr4/common.c
         antlr4/encoding.c
         antlr4/encoding.h
-        antlr4/error.c
-        antlr4/error.h
+        antlr4/lexing_error.c
+        antlr4/lexing_error.h
         antlr4/input.c
         antlr4/input.h
         antlr4/token.c

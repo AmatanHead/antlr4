@@ -2,15 +2,17 @@
 
 #include "common.h"
 
+#include <stdint.h>
+
 
 /**
- * Lexing/parsing error.
+ * Lexing error.
  */
-a4_struct(A4_Error) {
-    /// Line at which the error was generated.
+a4_struct(A4_LexingError) {
+    /// Line at which the error occurred.
     uint32_t line;
 
-    /// Column at which the error was generated.
+    /// Column at which the error occurred.
     uint32_t column;
 
     /// If applicable, line at which the errored range ended.
