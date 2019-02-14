@@ -135,11 +135,11 @@ void My_Delete(A4_My* lexer);
 /// @param lexer lexer instance which will be used to parse the input.
 /// @param begin pointer to the first character of the input string.
 /// @param end pointer to the past-the-last character of the input string.
-/// @param result
+/// @param result where to write parsing result.
 /// @return error code if something went wrong, `A4_SUCCESS` if all correct. Note that `A4_SUCCESS` means that
 /// lexer finished its logic successfully, but it does not mean that the input was valid.
 /// Check `A4_LexingResult`'s `errors` array to check input validity.
-A4_ERRNO My_Run(A4_MemoryPool* pool, A4_My* lexer, const char* begin, const char* end, A4_LexingResult* result);
+A4_ERRNO My_Parse(A4_MemoryPool* pool, A4_My* lexer, const char* begin, const char* end, A4_LexingResult* result);
 
 
 #ifdef __cplusplus

@@ -31,6 +31,10 @@ ADD_LIBRARY(cantlr4
         antlr4/common.c
         antlr4/input.c
         antlr4/input.h
+        antlr4/lc_mode.c
+        antlr4/lc_mode.h
+        antlr4/lexer.c
+        antlr4/lexer.h
         antlr4/lexing_error.c
         antlr4/lexing_error.h
         antlr4/lexing_result.c

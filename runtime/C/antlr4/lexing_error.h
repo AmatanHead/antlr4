@@ -24,3 +24,12 @@ a4_struct(A4_LexingError) {
     /// Non-owning pointer to the null-terminated error message.
     const char* message;
 };
+
+
+// List of error pointers
+// --------------------------------------------------------------------------------------------------------------------
+
+#define A4_LIST_NAME A4_LexingErrorList
+#define A4_LIST_PAYLOAD A4_LexingError*
+#define A4_LIST_NO_DTOR
+#include "util/list.inl"

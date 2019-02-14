@@ -6,6 +6,8 @@ extern "C" {
 
 #include "common.h"
 #include "input.h"
+#include "lc_mode.h"
+#include "lexer.h"
 #include "lexing_error.h"
 #include "lexing_result.h"
 #include "token.h"
