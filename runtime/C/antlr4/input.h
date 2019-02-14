@@ -75,10 +75,8 @@ static inline A4_ERRNO A4_Input_Seek(A4_Input* input, uint32_t index) {
     if (input->cur == input->end) {
         input->cur_codepoint = 0;
     } else {
-        uint8_t len;
-        if (!(len = A4_ReadCodepoint(&input->cur_codepoint, input->cur, input->end))) {
-            return A4_E_INVALID_ENCODING;
-        }
+        uint8_t len = A4_ReadCodepoint(&input->cur_codepoint, input->cur, input->end);
+        if (len == 0) return A4_E_INVALID_ENCODING;
         input->cur += len;
     }
 
@@ -104,10 +102,8 @@ static inline uint32_t A4_Input_Next(const A4_Input* input) {
 static inline A4_ERRNO A4_Input_Advance(A4_Input* input) {
     assert(input);
 
-    uint8_t len;
-    if (!(len = A4_ReadCodepoint(&input->cur_codepoint, input->cur, input->end))) {
-        return A4_E_INVALID_ENCODING;
-    }
+    uint8_t len = A4_ReadCodepoint(&input->cur_codepoint, input->cur, input->end);
+    if (len == 0) return A4_E_INVALID_ENCODING;
     input->cur += len;
 
     return A4_SUCCESS;
