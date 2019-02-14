@@ -5,7 +5,6 @@ extern "C" {
 #endif
 
 #include "common.h"
-#include "encoding.h"
 #include "lexing_error.h"
 #include "token.h"
 

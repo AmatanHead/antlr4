@@ -135,7 +135,7 @@ a4_struct(A4_LexingResult) {
 
     /// Array of errors. If empty, lexing finished successfully.
     struct {
-        A4_Error const* const* data;
+        A4_LexingError const* const* data;
         size_t size;
     } errors;
 };
@@ -149,35 +149,15 @@ void My_Delete(A4_My* lexer);
 
 /// Perform lexical analysis.
 ///
-/// Note: use safe `My_Run_UTFXX()` methods below to avoid type errors.
-///
 /// @param pool memory pool in which all tokens and errors will be allocated.
 /// @param lexer lexer instance which will be used to parse the input.
-/// @param begin pointer to the first character of the input string. Depending on `encoding`, this can point to either
-/// `uint8_t`, `uint16_t` or `uint32_t`.
-/// @param end pointer to the past-the-last character of the input string. Depending on `encoding`, this can point to
-/// either `uint8_t`, `uint16_t` or `uint32_t`.
-/// @param encoding how to interpret input bytes.
+/// @param begin pointer to the first character of the input string.
+/// @param end pointer to the past-the-last character of the input string.
 /// @param result
 /// @return error code if something went wrong, `A4_SUCCESS` if all correct. Note that `A4_SUCCESS` means that
 /// lexer finished its logic successfully, but it does not mean that the input was valid.
 /// Check `A4_LexingResult`'s `errors` array to check input validity.
-A4_ERRNO My_Run(A4_MemoryPool* pool, A4_My* lexer, const void* begin, const void* end, A4_Encoding encoding, A4_LexingResult* result);
-
-/// Perform lexical analysis on a UTF8 string. See `My_Run` for details.
-static inline A4_ERRNO My_Run_UTF8(A4_MemoryPool* pool, A4_My* lexer, const uint8_t* begin, const uint8_t* end, A4_LexingResult* result) {
-    return My_Run(pool, lexer, begin, end, A4_E_UTF8, result);
-}
-
-/// Perform lexical analysis on a UTF16 string. See `My_Run` for details.
-static inline A4_ERRNO My_Run_UTF16(A4_MemoryPool* pool, A4_My* lexer, const uint16_t* begin, const uint16_t* end, A4_LexingResult* result) {
-    return My_Run(pool, lexer, begin, end, A4_E_UTF16, result);
-}
-
-/// Perform lexical analysis on a UTF32 string. See `My_Run` for details.
-static inline A4_ERRNO My_Run_UTF32(A4_MemoryPool* pool, A4_My* lexer, const uint32_t* begin, const uint32_t* end, A4_LexingResult* result) {
-    return My_Run(pool, lexer, begin, end, A4_E_UTF32, result);
-}
+A4_ERRNO My_Run(A4_MemoryPool* pool, A4_My* lexer, const char* begin, const char* end, A4_LexingResult* result);
 
 
 #ifdef __cplusplus
