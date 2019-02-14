@@ -33,6 +33,8 @@ ADD_LIBRARY(cantlr4
         antlr4/encoding.h
         antlr4/error.c
         antlr4/error.h
+        antlr4/input.c
+        antlr4/input.h
         antlr4/token.c
         antlr4/token.h
 
