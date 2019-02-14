@@ -5,7 +5,9 @@ extern "C" {
 #endif
 
 #include "common.h"
+#include "input.h"
 #include "lexing_error.h"
+#include "lexing_result.h"
 #include "token.h"
 
 #include "memory/pool.h"

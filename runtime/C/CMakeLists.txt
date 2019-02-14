@@ -29,10 +29,12 @@ ADD_LIBRARY(cantlr4
         antlr4/antlr4.h
         antlr4/common.h
         antlr4/common.c
-        antlr4/lexing_error.c
-        antlr4/lexing_error.h
         antlr4/input.c
         antlr4/input.h
+        antlr4/lexing_error.c
+        antlr4/lexing_error.h
+        antlr4/lexing_result.c
+        antlr4/lexing_result.h
         antlr4/token.c
         antlr4/token.h
 

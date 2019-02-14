@@ -123,24 +123,6 @@ const char* My_ChToName(My_Ch tok);
 const char* My_MToName(My_M tok);
 
 
-/**
- * Lexer invocation result.
- */
-a4_struct(A4_LexingResult) {
-    /// Array of tokens.
-    struct {
-        A4_Token const* const* data;
-        size_t size;
-    } tokens;
-
-    /// Array of errors. If empty, lexing finished successfully.
-    struct {
-        A4_LexingError const* const* data;
-        size_t size;
-    } errors;
-};
-
-
 /// Create a new instance of lexer.
 A4_ERRNO My_New(A4_My** result);
 
