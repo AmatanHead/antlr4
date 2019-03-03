@@ -7,17 +7,7 @@
  * Basic support for UUIDs. For this library it's enough to parse them and to compare them.
  */
 a4_struct(A4_UUID) {
-    union {
-        uint32_t data[4];
-        struct {
-            uint32_t time_low;
-            uint16_t time_mid;
-            uint8_t  time_hi_and_version;
-            uint8_t  clock_seq_hi_and_reserved;
-            uint8_t  clock_seq_low;
-            uint8_t  node[6];
-        };
-    };
+    uint32_t data[4];
 };
 
 
