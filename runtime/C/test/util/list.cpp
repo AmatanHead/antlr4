@@ -1,20 +1,10 @@
 #include <gtest/gtest.h>
 
+#include "counted.h"
+
 extern "C" {
-
-struct Counted { int* ac; int x; };
-struct Counted* Counted_New(int* ac, int x) {
-    (*ac) += 1;
-    return new Counted{ac, x};
-}
-void Counted_Delete(struct Counted* x) {
-    *(x->ac) -= 1;
-    free(x);
-}
-
-
 #define A4_LIST_NAME IntList
-#define A4_LIST_PAYLOAD int
+#define A4_LIST_PAYLOAD uint32_t
 #define A4_LIST_NO_DTOR
 #include <antlr4/util/list.inl>
 
@@ -22,16 +12,15 @@ void Counted_Delete(struct Counted* x) {
 #define A4_LIST_PAYLOAD struct Counted*
 #define A4_LIST_DTOR Counted_Delete
 #include <antlr4/util/list.inl>
-
 }
 
-static inline int IntListGetter(int x) { return x; }
-static inline int CountedListGetter(struct Counted* x) { return x->x; }
+static inline uint32_t IntListGetter(uint32_t x) { return x; }
+static inline uint32_t CountedListGetter(struct Counted* x) { return x->x; }
 
 #define CHECK_LIST_CONTENTS(name, list, ...)                                                \
-    {                                                                                       \
-        int elems[] = {__VA_ARGS__};                                                        \
-        size_t size = sizeof(elems) / sizeof(int);                                          \
+    do {                                                                                    \
+        uint32_t elems[] = {__VA_ARGS__};                                                   \
+        size_t size = sizeof(elems) / sizeof(uint32_t);                                     \
                                                                                             \
         ASSERT_EQ(name##_Size(list), size);                                                 \
         ASSERT_EQ(name##Getter(name##_First(list)), elems[0]);                              \
@@ -66,7 +55,7 @@ static inline int CountedListGetter(struct Counted* x) { return x->x; }
             }                                                                               \
             ASSERT_EQ(tail, nullptr);                                                       \
         }                                                                                   \
-    }
+    } while (false)
 
 TEST(List, SimpleList) {
     IntList* list = IntList_New();
@@ -144,101 +133,125 @@ TEST(List, SimpleList) {
 }
 
 TEST(List, CountedList) {
-    int ac = 0;
+    int new_calls = 0;
+    int delete_calls = 0;
 
     CountedList* list = CountedList_New();
 
     ASSERT_EQ(CountedList_Size(list), 0);
 
-    ASSERT_EQ(ac, 0);
+    ASSERT_EQ(new_calls, 0);
+    ASSERT_EQ(delete_calls, 0);
 
-    ASSERT_EQ(CountedList_Append(list, Counted_New(&ac, 10)), A4_SUCCESS);
+    ASSERT_EQ(CountedList_Append(list, Counted_New({&new_calls, &delete_calls, 10})), A4_SUCCESS);
     CHECK_LIST_CONTENTS(CountedList, list, 10);
-    ASSERT_EQ(ac, 1);
+    ASSERT_EQ(new_calls, 1);
+    ASSERT_EQ(delete_calls, 0);
 
-    ASSERT_EQ(CountedList_Append(list, Counted_New(&ac, 11)), A4_SUCCESS);
+    ASSERT_EQ(CountedList_Append(list, Counted_New({&new_calls, &delete_calls, 11})), A4_SUCCESS);
     CHECK_LIST_CONTENTS(CountedList, list, 10, 11);
-    ASSERT_EQ(ac, 2);
+    ASSERT_EQ(new_calls, 2);
+    ASSERT_EQ(delete_calls, 0);
 
-    ASSERT_EQ(CountedList_Prepend(list, Counted_New(&ac, 9)), A4_SUCCESS);
+    ASSERT_EQ(CountedList_Prepend(list, Counted_New({&new_calls, &delete_calls, 9})), A4_SUCCESS);
     CHECK_LIST_CONTENTS(CountedList, list, 9, 10, 11);
-    ASSERT_EQ(ac, 3);
+    ASSERT_EQ(new_calls, 3);
+    ASSERT_EQ(delete_calls, 0);
 
     CountedList_RemoveFront(list);
     CHECK_LIST_CONTENTS(CountedList, list, 10, 11);
-    ASSERT_EQ(ac, 2);
+    ASSERT_EQ(new_calls, 3);
+    ASSERT_EQ(delete_calls, 1);
 
     CountedList_RemoveBack(list);
     CHECK_LIST_CONTENTS(CountedList, list, 10);
-    ASSERT_EQ(ac, 1);
+    ASSERT_EQ(new_calls, 3);
+    ASSERT_EQ(delete_calls, 2);
 
-    ASSERT_EQ(CountedList_Append(list, Counted_New(&ac, 11)), A4_SUCCESS);
+    ASSERT_EQ(CountedList_Append(list, Counted_New({&new_calls, &delete_calls, 11})), A4_SUCCESS);
     CHECK_LIST_CONTENTS(CountedList, list, 10, 11);
-    ASSERT_EQ(ac, 2);
+    ASSERT_EQ(new_calls, 4);
+    ASSERT_EQ(delete_calls, 2);
 
-    ASSERT_EQ(CountedList_Prepend(list, Counted_New(&ac, 9)), A4_SUCCESS);
+    ASSERT_EQ(CountedList_Prepend(list, Counted_New({&new_calls, &delete_calls, 9})), A4_SUCCESS);
     CHECK_LIST_CONTENTS(CountedList, list, 9, 10, 11);
-    ASSERT_EQ(ac, 3);
+    ASSERT_EQ(new_calls, 5);
+    ASSERT_EQ(delete_calls, 2);
 
     CountedList_Elem* elem = CountedList_Elem_Next(CountedList_Head(list));
 
     ASSERT_EQ(CountedList_Elem_Payload(elem)->x, 10);
 
-    ASSERT_EQ(CountedList_InsertBefore(list, elem, Counted_New(&ac, 1)), A4_SUCCESS);
+    ASSERT_EQ(CountedList_InsertBefore(list, elem, Counted_New({&new_calls, &delete_calls, 1})), A4_SUCCESS);
     CHECK_LIST_CONTENTS(CountedList, list, 9, 1, 10, 11);
-    ASSERT_EQ(ac, 4);
+    ASSERT_EQ(new_calls, 6);
+    ASSERT_EQ(delete_calls, 2);
 
-    ASSERT_EQ(CountedList_InsertAfter(list, elem, Counted_New(&ac, 2)), A4_SUCCESS);
+    ASSERT_EQ(CountedList_InsertAfter(list, elem, Counted_New({&new_calls, &delete_calls, 2})), A4_SUCCESS);
     CHECK_LIST_CONTENTS(CountedList, list, 9, 1, 10, 2, 11);
-    ASSERT_EQ(ac, 5);
+    ASSERT_EQ(new_calls, 7);
+    ASSERT_EQ(delete_calls, 2);
 
     CountedList_Remove(list, elem);
     CHECK_LIST_CONTENTS(CountedList, list, 9, 1, 2, 11);
-    ASSERT_EQ(ac, 4);
+    ASSERT_EQ(new_calls, 7);
+    ASSERT_EQ(delete_calls, 3);
 
     CountedList_Clear(list);
 
     ASSERT_EQ(CountedList_Size(list), 0);
-    ASSERT_EQ(ac, 0);
+    ASSERT_EQ(new_calls, 7);
+    ASSERT_EQ(delete_calls, 7);
 
-    ASSERT_EQ(CountedList_AppendMove(list, Counted_New(&ac, 10)), A4_SUCCESS);
+    ASSERT_EQ(CountedList_AppendMove(list, Counted_New({&new_calls, &delete_calls, 10})), A4_SUCCESS);
     CHECK_LIST_CONTENTS(CountedList, list, 10);
-    ASSERT_EQ(ac, 1);
+    ASSERT_EQ(new_calls, 8);
+    ASSERT_EQ(delete_calls, 7);
 
-    ASSERT_EQ(CountedList_PrependMove(list, Counted_New(&ac, 9)), A4_SUCCESS);
+    ASSERT_EQ(CountedList_PrependMove(list, Counted_New({&new_calls, &delete_calls, 9})), A4_SUCCESS);
     CHECK_LIST_CONTENTS(CountedList, list, 9, 10);
-    ASSERT_EQ(ac, 2);
+    ASSERT_EQ(new_calls, 9);
+    ASSERT_EQ(delete_calls, 7);
 
     elem = CountedList_Elem_Next(CountedList_Head(list));
 
     ASSERT_EQ(CountedList_Elem_Payload(elem)->x, 10);
 
-    ASSERT_EQ(CountedList_InsertBeforeMove(list, elem, Counted_New(&ac, 1)), A4_SUCCESS);
+    ASSERT_EQ(CountedList_InsertBeforeMove(list, elem, Counted_New({&new_calls, &delete_calls, 1})), A4_SUCCESS);
     CHECK_LIST_CONTENTS(CountedList, list, 9, 1, 10);
-    ASSERT_EQ(ac, 3);
+    ASSERT_EQ(new_calls, 10);
+    ASSERT_EQ(delete_calls, 7);
 
-    ASSERT_EQ(CountedList_InsertAfterMove(list, elem, Counted_New(&ac, 2)), A4_SUCCESS);
+    ASSERT_EQ(CountedList_InsertAfterMove(list, elem, Counted_New({&new_calls, &delete_calls, 2})), A4_SUCCESS);
     CHECK_LIST_CONTENTS(CountedList, list, 9, 1, 10, 2);
-    ASSERT_EQ(ac, 4);
+    ASSERT_EQ(new_calls, 11);
+    ASSERT_EQ(delete_calls, 7);
 
     Counted_Delete(CountedList_Pop(list, elem));
     CHECK_LIST_CONTENTS(CountedList, list, 9, 1, 2);
-    ASSERT_EQ(ac, 3);
+    ASSERT_EQ(new_calls, 11);
+    ASSERT_EQ(delete_calls, 8);
 
     Counted_Delete(CountedList_PopFront(list));
     CHECK_LIST_CONTENTS(CountedList, list, 1, 2);
-    ASSERT_EQ(ac, 2);
+    ASSERT_EQ(new_calls, 11);
+    ASSERT_EQ(delete_calls, 9);
 
     Counted_Delete(CountedList_PopBack(list));
     CHECK_LIST_CONTENTS(CountedList, list, 1);
-    ASSERT_EQ(ac, 1);
+    ASSERT_EQ(new_calls, 11);
+    ASSERT_EQ(delete_calls, 10);
 
     Counted_Delete(CountedList_PopFront(list));
 
     ASSERT_EQ(CountedList_Size(list), 0);
-    ASSERT_EQ(ac, 0);
+    ASSERT_EQ(new_calls, 11);
+    ASSERT_EQ(delete_calls, 11);
 
     CountedList_Delete(list);
+
+    ASSERT_EQ(new_calls, 11);
+    ASSERT_EQ(delete_calls, 11);
 };
 
 // TODO: copy to pool test

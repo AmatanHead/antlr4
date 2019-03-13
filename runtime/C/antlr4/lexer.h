@@ -31,7 +31,7 @@ a4_struct(A4_Lexer) {
 // --------------------------------------------------------------------------------------------------------------------
 
 /// Init new lexer without a state.
-A4_Lexer A4_Lexer_Init();
+A4_Lexer A4_Lexer_Init(void);
 
 /// Reset a lexer.
 void A4_Lexer_Reset(A4_Lexer* lexer, A4_Input input);

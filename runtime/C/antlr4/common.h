@@ -20,6 +20,7 @@ typedef int A4_Errno;
 #define A4_E_SYSTEM             1000            ///< System errors.
 #define A4_E_MEMORY             1001            ///< Memory allocation failure.
 #define A4_E_FORMAT             1002            ///< Printf formatting error.
+#define A4_E_INDEX_ERROR        1003            ///< Hashtable or array index error.
 
 #define A4_E_INPUT              2000            ///< Input read and encoding/decoding errors.
 #define A4_E_INVALID_ENCODING   2001            ///< UTF decoding error. Input string is invalid.

@@ -16,6 +16,7 @@
 a4_enum(A4_ATNType) {
     /// A lexer grammar.
     A4_ATNT_LEXER = 0,
+
     /// A parser grammar.
     A4_ATNT_PARSER = 1,
 

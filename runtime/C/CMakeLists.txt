@@ -92,6 +92,8 @@ ADD_EXECUTABLE(test
         test/util/list.cpp
         test/util/utf.cpp
         test/util/uuid.cpp
+        test/util/hashtable.cpp
+        test/util/counted.h
 )
 TARGET_LINK_LIBRARIES(test gtest gtest_main)
 TARGET_LINK_LIBRARIES(test cantlr4)

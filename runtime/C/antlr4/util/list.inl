@@ -14,45 +14,45 @@
  * For example:
  *
  * @code
- * #define A4_LIST_NAME IntList
- * #define A4_LIST_PAYLOAD int
- * #define A4_LIST_NO_DTOR
+ * #define A4_LIST_NAME StrList
+ * #define A4_LIST_PAYLOAD char*
+ * #define A4_LIST_DTOR free
  * #include <antlr4/util/list.inl>  // Note: list.inl will undef all macros for you
  *
  * // Now you get the following structs and methods:
  *
- * typedef struct IntList_Elem IntList_Elem;
- * typedef struct IntList IntList;
- * IntList* IntList_New(void);
- * void IntList_Delete(IntList* list);
+ * typedef struct StrList_Elem StrList_Elem;
+ * typedef struct StrList StrList;
+ * StrList* StrList_New(void);
+ * void StrList_Delete(StrList* list);
  * ...
  * @endcode
  */
 
 #ifndef A4_LIST_NAME
-#error "A4_LIST_NAME must be defined prior to list.inl inclusion"
-#define A4_LIST_NAME UnnamedList
+#    error "A4_LIST_NAME must be defined prior to list.inl inclusion"
+#    define A4_LIST_NAME UnnamedList
 #endif
 
 #ifndef A4_LIST_PAYLOAD
-#error "A4_LIST_PAYLOAD must be defined prior to list.inl inclusion"
-#define A4_LIST_PAYLOAD void*
+#    error "A4_LIST_PAYLOAD must be defined prior to list.inl inclusion"
+#    define A4_LIST_PAYLOAD void*
 #endif
 
 #if defined(A4_LIST_DTOR) && defined(A4_LIST_NO_DTOR)
 #    error "only one of A4_LIST_DTOR and A4_LIST_NO_DTOR may be defined at the same time"
 #endif
 #ifndef A4_LIST_DTOR
-#   ifdef A4_LIST_NO_DTOR
-#       define A4_LIST_PAYLOAD_NODISCARD
-#       define A4_LIST_DTOR(x) (void)x;
-#   else
-#       error "A4_LIST_DTOR or A4_LIST_NO_DTOR must be defined prior to list.inl inclusion"
-#       define A4_LIST_PAYLOAD_NODISCARD A4_NODISCARD
-#       define A4_LIST_DTOR(x) (void)x;
-#   endif
+#    ifdef A4_LIST_NO_DTOR
+#        define A4_LIST_PAYLOAD_NODISCARD
+#        define A4_LIST_DTOR(x) (void)(x)
+#    else
+#        error "A4_LIST_DTOR or A4_LIST_NO_DTOR must be defined prior to list.inl inclusion"
+#        define A4_LIST_PAYLOAD_NODISCARD A4_NODISCARD
+#        define A4_LIST_DTOR(x) (void)(x)
+#    endif
 #else
-#   define A4_LIST_PAYLOAD_NODISCARD A4_NODISCARD
+#    define A4_LIST_PAYLOAD_NODISCARD A4_NODISCARD
 #endif
 
 #include "../common.h"
@@ -486,13 +486,12 @@ static inline void A4_LIST_CLEAR(A4_LIST_NAME* list) {
 
 #undef A4_LIST_NAME
 #undef A4_LIST_PAYLOAD
-#ifdef A4_LIST_DTOR
-#   undef A4_LIST_DTOR
-#endif
+#undef A4_LIST_DTOR
 #ifdef A4_LIST_NO_DTOR
-#   undef A4_LIST_NO_DTOR
+#    undef A4_LIST_NO_DTOR
 #endif
 #undef A4_LIST_PAYLOAD_NODISCARD
+
 #undef A4_LIST_ELEM
 #undef A4_LIST_ELEM_NEW
 #undef A4_LIST_ELEM_DELETE_PAYLOAD
