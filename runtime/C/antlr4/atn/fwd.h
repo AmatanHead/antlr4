@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _F634B740_1B4F_4349_B21A_FB80F68BFAE0
+#define _F634B740_1B4F_4349_B21A_FB80F68BFAE0
 
 #include "../common.h"
 
@@ -48,3 +49,5 @@ typedef struct A4_LexerTypeAction A4_LexerTypeAction;
 typedef struct A4_LexerIndexedCustomAction A4_LexerIndexedCustomAction;
 
 typedef struct A4_ATN A4_ATN;
+
+#endif /* UUID */

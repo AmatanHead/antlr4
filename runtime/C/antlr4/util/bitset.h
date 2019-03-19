@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _9888A0F9_5EF3_4AA8_91A5_8D31A75A2F51
+#define _9888A0F9_5EF3_4AA8_91A5_8D31A75A2F51
 
 #include "../common.h"
 #include "../memory/pool.h"
@@ -41,3 +42,5 @@ A4_ERRNO A4_BitSet_Add(A4_BitSet* set, uint32_t elem);
 
 /// Allocate a new chunk of memory on the set with the given alignment.
 bool A4_BitSet_Contains(const A4_BitSet* set, uint32_t elem);
+
+#endif /* UUID */

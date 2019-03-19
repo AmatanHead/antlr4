@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _29E11A42_8B00_4AF2_BB28_382439352E0A
+#define _29E11A42_8B00_4AF2_BB28_382439352E0A
 
 #include "../common.h"
 #include "../memory/pool.h"
@@ -43,3 +44,5 @@ bool A4_IntSet_Contains(const A4_IntSet* set, uint32_t elem);
 
 /// Get number of stored intervals.
 size_t A4_IntSet_NumIntervals(const A4_IntSet* set);
+
+#endif /* UUID */

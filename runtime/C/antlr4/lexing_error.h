@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _2DD0212A_0C79_4174_BE1F_D3EFFF674772
+#define _2DD0212A_0C79_4174_BE1F_D3EFFF674772
 
 #include "common.h"
 
@@ -33,3 +34,5 @@ a4_struct(A4_LexingError) {
 #define A4_LIST_PAYLOAD A4_LexingError*
 #define A4_LIST_NO_DTOR
 #include "util/list.inl"
+
+#endif /* UUID */

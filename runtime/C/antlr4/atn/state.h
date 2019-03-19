@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _929034E0_1836_4AA9_8B72_E65E7B6FC478
+#define _929034E0_1836_4AA9_8B72_E65E7B6FC478
 
 #include "../memory/pool.h"
 #include "../util/bitset.h"
@@ -215,3 +216,5 @@ A4_ATNRuleStopState* A4_NODISCARD A4_ATNRuleStopState_New(A4_MemoryPool* pool, u
 A4_ATNBlockEndState* A4_NODISCARD A4_ATNBlockEndState_New(A4_MemoryPool* pool, uint16_t state_number, uint16_t rule_index);
 A4_ATNStarLoopBackState* A4_NODISCARD A4_ATNStarLoopBackState_New(A4_MemoryPool* pool, uint16_t state_number, uint16_t rule_index);
 A4_ATNLoopEndState* A4_NODISCARD A4_ATNLoopEndState_New(A4_MemoryPool* pool, uint16_t state_number, uint16_t rule_index);
+
+#endif /* UUID */

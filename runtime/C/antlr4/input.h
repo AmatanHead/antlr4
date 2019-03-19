@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _516A70B1_B9CD_41EF_A274_A0D6B0D60595
+#define _516A70B1_B9CD_41EF_A274_A0D6B0D60595
 
 #include "common.h"
 
@@ -108,3 +109,5 @@ static inline A4_ERRNO A4_Input_Advance(A4_Input* input) {
 
     return A4_SUCCESS;
 }
+
+#endif /* UUID */

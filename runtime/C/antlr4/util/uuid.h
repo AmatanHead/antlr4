@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _670A4195_A876_4C62_A8B3_C6278F4C8BC4
+#define _670A4195_A876_4C62_A8B3_C6278F4C8BC4
 
 #include "../common.h"
 
@@ -34,3 +35,5 @@ static inline bool A4_UUID_Eq(const A4_UUID a, const A4_UUID b) {
 static inline bool A4_UUID_IsZero(const A4_UUID uuid) {
     return (uuid.data[0] | uuid.data[1] | uuid.data[2] | uuid.data[3]) == 0;
 }
+
+#endif /* UUID */

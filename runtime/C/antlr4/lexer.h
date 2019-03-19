@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _F84C8639_72AD_459C_8AF3_A5774EB026DD
+#define _F84C8639_72AD_459C_8AF3_A5774EB026DD
 
 #include "common.h"
 #include "input.h"
@@ -35,3 +36,5 @@ A4_Lexer A4_Lexer_Init(void);
 
 /// Reset a lexer.
 void A4_Lexer_Reset(A4_Lexer* lexer, A4_Input input);
+
+#endif /* UUID */

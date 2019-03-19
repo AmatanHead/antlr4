@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _83C7D418_796D_4E0F_9609_7C06BCF78347
+#define _83C7D418_796D_4E0F_9609_7C06BCF78347
 
 #include "../common.h"
 
@@ -76,3 +77,5 @@ void* A4_MemoryPool_MallocAligned(A4_MemoryPool* pool, size_t size, size_t align
 /// Allocate object of the given type.
 #define A4_POOL_ALLOC(pool, T) (T*)A4_MemoryPool_MallocAligned((pool), sizeof(T), alignof(T))
 #define A4_POOL_CALLOC(pool, T, size) (T*)A4_MemoryPool_MallocAligned((pool), sizeof(T) * size, alignof(T))
+
+#endif /* UUID */

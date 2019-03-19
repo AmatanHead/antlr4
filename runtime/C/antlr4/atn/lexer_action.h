@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _DEFBCB53_6904_4410_A590_B4936E16496E
+#define _DEFBCB53_6904_4410_A590_B4936E16496E
 
 #include "../common.h"
 #include "../memory/pool.h"
@@ -116,3 +117,5 @@ A4_LexerPopModeAction* A4_NODISCARD A4_LexerPopModeAction_New(A4_MemoryPool* poo
 A4_LexerPushModeAction* A4_NODISCARD A4_LexerPushModeAction_New(A4_MemoryPool* pool, uint16_t mode);
 A4_LexerSkipAction* A4_NODISCARD A4_LexerSkipAction_New(A4_MemoryPool* pool);
 A4_LexerTypeAction* A4_NODISCARD A4_LexerTypeAction_New(A4_MemoryPool* pool, uint16_t type);
+
+#endif /* UUID */

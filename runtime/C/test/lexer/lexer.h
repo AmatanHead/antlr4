@@ -1,7 +1,8 @@
 // Generated from <file> by ANTLR 4.7
 // DO NOT EDIT -- your changes will be overwritten!
 
-#pragma once
+#ifndef _EE8C39FF_B311_48CB_B635_121D3A91C718
+#define _EE8C39FF_B311_48CB_B635_121D3A91C718
 
 #include <antlr4/antlr4.h>
 
@@ -145,3 +146,5 @@ A4_ERRNO My_Parse(A4_MemoryPool* pool, A4_My* lexer, const char* begin, const ch
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* UUID */

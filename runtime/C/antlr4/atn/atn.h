@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _7E2FEC60_F9D9_47AC_A242_4326E9166128
+#define _7E2FEC60_F9D9_47AC_A242_4326E9166128
 
 #include "../util/bitset.h"
 #include "../memory/pool.h"
@@ -77,3 +78,5 @@ struct A4_ATN {
 /// Load ATN from bytecode. If loading fails, pool might get polluted by the half-loaded ATN.
 /// Generating ATN with bypass transitions is not supported at the moment.
 A4_ERRNO A4_ATN_Load(A4_ATN** result, A4_MemoryPool* pool, const uint16_t* bytecode, size_t bytecode_size);
+
+#endif /* UUID */

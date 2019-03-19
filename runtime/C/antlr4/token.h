@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _1B5A2432_DDC5_4503_8DC7_C8894DFF79AD
+#define _1B5A2432_DDC5_4503_8DC7_C8894DFF79AD
 
 #include "common.h"
 
@@ -57,3 +58,5 @@ a4_struct(A4_Token) {
 #define A4_LIST_PAYLOAD A4_Token*
 #define A4_LIST_NO_DTOR
 #include "util/list.inl"
+
+#endif /* UUID */

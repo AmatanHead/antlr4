@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _288FC72A_2496_48A7_A1F9_075A833FBEE9
+#define _288FC72A_2496_48A7_A1F9_075A833FBEE9
 
 #include "util/one_of.h"
 
@@ -63,11 +64,11 @@ typedef int A4_Errno;
 // Typing support
 // --------------------------------------------------------------------------------------------------------------------
 
-// Normally I try to avoid typedefs as mush as possible, however, this project is a little bit different.
+// Normally I try to avoid typedefs as much as possible. This project is a little bit different.
 // I want to keep headers of this library C++-compatible so that it can eventually replace (or complement)
 // the C++ runtime. To do so I need to ensure that there are no enum predeclarations and all enums have proper type
 // specified (i.e. `enum : int`). So I'm forcing myself to include all necessary headers by using typedef'd enums
-// and structs. As a bonus, typedefs add protection against misspells.
+// and structs. As a bonus, typedefs add protection against misspelling.
 
 /// Helpers to avoid hell when defining structs, enums and unions. Add proper typedefs, keep enums C++-compatible.
 /// @{
@@ -138,3 +139,5 @@ typedef int A4_Errno;
 #define A4_CAT(X, Y) __A4_CAT_1(X, Y)
 #define __A4_CAT_1(X, Y) __A4_CAT_2(X, Y)
 #define __A4_CAT_2(X, Y) X##Y
+
+#endif /* UUID */
