@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _DF058DE6_D42A_4F53_92A0_A1342F949CC6
+#define _DF058DE6_D42A_4F53_92A0_A1342F949CC6
 
 #include "../common.h"
 
@@ -63,3 +64,5 @@ static inline uint8_t A4_ReadCodepoint(uint32_t* res, const unsigned char* p, co
 #undef A4_L
 #undef A4_C
 #undef A4_E
+
+#endif /* UUID */

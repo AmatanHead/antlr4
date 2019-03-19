@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _E77A4425_8696_476D_899D_53426759EB5D
+#define _E77A4425_8696_476D_899D_53426759EB5D
 
 #include "../common.h"
 
@@ -31,3 +32,5 @@ a4_struct(A4_ATNConfig) {
 };
 
 static_assert(sizeof(A4_ATNConfig) == 6, "please, keep memory footprint of this struct as low as possible");
+
+#endif /* UUID */

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _0C572A40_329C_4718_8FA1_0A177082E49F
+#define _0C572A40_329C_4718_8FA1_0A177082E49F
 
 #include "fwd.h"
 
@@ -21,3 +22,5 @@ a4_struct(A4_ATNLexerSimulator) {
     /// Lexer semantic predicate executor.
     A4_PredicateExecutor* sempred_executor;
 };
+
+#endif /* UUID */

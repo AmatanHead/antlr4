@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _52323810_DD69_43B5_A32D_3494EE2EB26B
+#define _52323810_DD69_43B5_A32D_3494EE2EB26B
 
 #include "common.h"
 #include "token.h"
@@ -21,3 +22,5 @@ a4_struct(A4_LexingResult) {
         size_t size;
     } errors;
 };
+
+#endif /* UUID */

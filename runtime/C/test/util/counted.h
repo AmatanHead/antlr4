@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _C9751E28_A462_4047_847B_02CA250CD42E
+#define _C9751E28_A462_4047_847B_02CA250CD42E
 
 struct Counted {
     int* new_calls;
@@ -18,3 +19,5 @@ inline static void Counted_Delete(struct Counted* c) {
 }
 
 }
+
+#endif /* UUID */

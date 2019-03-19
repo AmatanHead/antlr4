@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _4441CB08_5EC6_4BED_9274_5F1AD45E93A1
+#define _4441CB08_5EC6_4BED_9274_5F1AD45E93A1
 
 #include "../util/intset.h"
 #include "../common.h"
@@ -193,3 +194,5 @@ A4_ATNActionTransition* A4_NODISCARD A4_ATNActionTransition_New(A4_MemoryPool* p
 A4_ATNSetTransition* A4_NODISCARD A4_ATNSetTransition_New(A4_MemoryPool* pool, A4_ATNState* target);
 A4_ATNNotSetTransition* A4_NODISCARD A4_ATNNotSetTransition_New(A4_MemoryPool* pool, A4_ATNState* target);
 A4_ATNWildcardTransition* A4_NODISCARD A4_ATNWildcardTransition_New(A4_MemoryPool* pool, A4_ATNState* target);
+
+#endif /* UUID */

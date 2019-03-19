@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _1A02C8EC_98AC_47A9_9BC8_5DBEF9F77B67
+#define _1A02C8EC_98AC_47A9_9BC8_5DBEF9F77B67
 
 #include "common.h"
 
@@ -25,3 +26,5 @@ a4_enum(A4_LCMode) {
     /// LSP line-column mode.
     A4_LC_LSP,
 };
+
+#endif /* UUID */

@@ -1,1 +1,4 @@
-#pragma once
+#ifndef _56B2FD9A_CFF2_4F09_9D5F_0A0514C8544C
+#define _56B2FD9A_CFF2_4F09_9D5F_0A0514C8544C
+
+#endif /* UUID */

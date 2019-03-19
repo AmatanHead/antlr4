@@ -1,4 +1,5 @@
-#pragma once
+#ifndef _B008D7A4_12EA_4467_B9EE_E6637048BEB6
+#define _B008D7A4_12EA_4467_B9EE_E6637048BEB6
 
 #ifdef __cplusplus
 extern "C" {
@@ -17,3 +18,5 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* UUID */
