@@ -1,5 +1,5 @@
-#ifndef _288FC72A_2496_48A7_A1F9_075A833FBEE9
-#define _288FC72A_2496_48A7_A1F9_075A833FBEE9
+#ifndef INC_288FC72A249648A7A1F9075A833FBEE9
+#define INC_288FC72A249648A7A1F9075A833FBEE9
 
 #include "util/one_of.h"
 
@@ -56,8 +56,8 @@ typedef int A4_Errno;
 #   define A4_LIKELY(c) __builtin_expect(!!(c), 1)
 #   define A4_UNLIKELY(c) __builtin_expect(!!(c), 0)
 #else
-#   define A4_LIKELY(c)
-#   define A4_UNLIKELY(c)
+#   define A4_LIKELY(c) (c)
+#   define A4_UNLIKELY(c) (c)
 #endif
 
 
