@@ -79,23 +79,29 @@ ADD_LIBRARY(cantlr4
 )
 ADD_SANITIZERS(cantlr4)
 
-ADD_EXECUTABLE(test
-        test/atn/atn.cpp
+FIND_PACKAGE(GTest)
+IF(GTEST_FOUND)
+    MESSAGE(STATUS "Google test framework found")
+    ADD_EXECUTABLE(test
+            test/atn/atn.cpp
 
-        test/lexer/lexer.c
+            test/lexer/lexer.c
 
-        test/memory/align.cpp
-        test/memory/pool.cpp
+            test/memory/align.cpp
+            test/memory/pool.cpp
 
-        test/util/bitset.cpp
-        test/util/intset.cpp
-        test/util/list.cpp
-        test/util/utf.cpp
-        test/util/uuid.cpp
-        test/util/hashtable.cpp
-        test/util/counted.h
-)
-TARGET_LINK_LIBRARIES(test gtest gtest_main)
-TARGET_LINK_LIBRARIES(test cantlr4)
-TARGET_INCLUDE_DIRECTORIES(test PRIVATE .)
-ADD_SANITIZERS(test)
+            test/util/bitset.cpp
+            test/util/intset.cpp
+            test/util/list.cpp
+            test/util/utf.cpp
+            test/util/uuid.cpp
+            test/util/hashtable.cpp
+            test/util/counted.h
+    )
+    TARGET_LINK_LIBRARIES(test GTest::GTest GTest::Main)
+    TARGET_LINK_LIBRARIES(test cantlr4)
+    TARGET_INCLUDE_DIRECTORIES(test PRIVATE .)
+    ADD_SANITIZERS(test)
+ELSE()
+    MESSAGE(STATUS "Google test framework not found, tests are not available")
+ENDIF()
