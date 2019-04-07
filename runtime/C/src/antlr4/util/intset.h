@@ -1,8 +1,9 @@
 #ifndef INC_29E11A428B004AF2BB28382439352E0A
 #define INC_29E11A428B004AF2BB28382439352E0A
 
+#include <antlr4/util/pool.h>
+
 #include <antlr4/common.h>
-#include <antlr4/memory/pool.h>
 
 #include <stdbool.h>
 #include <stdlib.h>

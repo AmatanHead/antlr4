@@ -13,7 +13,7 @@ extern "C" {
 #include "lexing_result.h"
 #include "token.h"
 
-#include "memory/pool.h"
+#include <antlr4/util/pool.h>
 
 #ifdef __cplusplus
 }

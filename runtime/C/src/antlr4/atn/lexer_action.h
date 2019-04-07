@@ -1,10 +1,11 @@
 #ifndef INC_DEFBCB5369044410A590B4936E16496E
 #define INC_DEFBCB5369044410A590B4936E16496E
 
-#include <antlr4/common.h>
-#include <antlr4/memory/pool.h>
-
 #include "fwd.h"
+
+#include <antlr4/util/pool.h>
+
+#include <antlr4/common.h>
 
 #include <stdbool.h>
 

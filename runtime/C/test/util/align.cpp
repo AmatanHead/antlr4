@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 extern "C" {
-#include <antlr4/memory/align.h>
+#include <antlr4/util/align.h>
 }
 
 TEST(Align, Basics) {

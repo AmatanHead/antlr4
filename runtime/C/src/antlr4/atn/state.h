@@ -1,11 +1,12 @@
 #ifndef INC_929034E018364AA98B72E65E7B6FC478
 #define INC_929034E018364AA98B72E65E7B6FC478
 
-#include <antlr4/memory/pool.h>
-#include <antlr4/util/bitset.h>
-#include <antlr4/common.h>
-
 #include "fwd.h"
+
+#include <antlr4/util/bitset.h>
+#include <antlr4/util/pool.h>
+
+#include <antlr4/common.h>
 
 #include <stdbool.h>
 

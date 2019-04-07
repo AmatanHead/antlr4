@@ -61,17 +61,16 @@ ADD_LIBRARY(cantlr4
         src/antlr4/dfa/state.c
         src/antlr4/dfa/state.h
 
-        src/antlr4/memory/align.c
-        src/antlr4/memory/align.h
-        src/antlr4/memory/pool.c
-        src/antlr4/memory/pool.h
-
+        src/antlr4/util/align.c
+        src/antlr4/util/align.h
         src/antlr4/util/bitset.c
         src/antlr4/util/bitset.h
         src/antlr4/util/intset.c
         src/antlr4/util/intset.h
         src/antlr4/util/one_of.c
         src/antlr4/util/one_of.h
+        src/antlr4/util/pool.c
+        src/antlr4/util/pool.h
         src/antlr4/util/utf.c
         src/antlr4/util/utf.h
         src/antlr4/util/uuid.c
@@ -88,15 +87,15 @@ IF(GTEST_FOUND)
 
             test/lexer/lexer.c
 
-            test/memory/align.cpp
-            test/memory/pool.cpp
 
+            test/util/align.cpp
             test/util/bitset.cpp
+            test/util/hashtable.cpp
             test/util/intset.cpp
             test/util/list.cpp
+            test/util/pool.cpp
             test/util/utf.cpp
             test/util/uuid.cpp
-            test/util/hashtable.cpp
             test/util/counted.h
     )
     TARGET_LINK_LIBRARIES(test GTest::GTest GTest::Main)

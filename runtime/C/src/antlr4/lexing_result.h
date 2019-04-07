@@ -2,8 +2,8 @@
 #define INC_52323810DD6943B5A32D3494EE2EB26B
 
 #include "common.h"
-#include "token.h"
 #include "lexing_error.h"
+#include "token.h"
 
 
 /**

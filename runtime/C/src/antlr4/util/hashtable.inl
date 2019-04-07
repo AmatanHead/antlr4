@@ -111,11 +111,12 @@
 #    define A4_HT_KEY_EQ(x, y) ((x) == (y))
 #endif
 
-#include <antlr4/common.h>
-#include <antlr4/memory/pool.h>
+#include <antlr4/util/pool.h>
 
-#include <stddef.h>
+#include <antlr4/common.h>
+
 #include <memory.h>
+#include <stddef.h>
 
 
 #define A4_HT_POP_RESULT A4_CAT(A4_HT_NAME, _PopResult)

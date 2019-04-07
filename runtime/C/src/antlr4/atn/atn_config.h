@@ -1,11 +1,11 @@
 #ifndef INC_E77A44258696476D899D53426759EB5D
 #define INC_E77A44258696476D899D53426759EB5D
 
-#include <antlr4/common.h>
+#include "fwd.h"
 
 #include "state.h"
 
-#include "fwd.h"
+#include <antlr4/common.h>
 
 
 /**

@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-#include "util/utf.h"
+#include <antlr4/util/utf.h>
 
 
 /**

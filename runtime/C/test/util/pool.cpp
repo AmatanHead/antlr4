@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 extern "C" {
-#include <antlr4/memory/pool.h>
+#include <antlr4/util/pool.h>
 }
 
 #define CHECK_POOL(allocated, left, waste)               \

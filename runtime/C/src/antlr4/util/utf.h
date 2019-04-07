@@ -3,6 +3,7 @@
 
 #include <antlr4/common.h>
 
+
 #define A4_UTF8_BROKEN_CHAR 0xFFFD
 
 #define A4_IS_C(x) ((x) & 0xC0u) == 0x80u

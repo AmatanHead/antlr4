@@ -1,7 +1,7 @@
 #ifndef INC_288FC72A249648A7A1F9075A833FBEE9
 #define INC_288FC72A249648A7A1F9075A833FBEE9
 
-#include "util/one_of.h"
+#include <antlr4/util/one_of.h>
 
 #include <assert.h>
 #include <stdint.h>
