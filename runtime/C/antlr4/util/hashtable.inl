@@ -202,7 +202,7 @@ static inline size_t A4_HT_CALCULATE_IDX_HINT_HASH(const A4_HT_NAME* ht, A4_HT_K
 /// @{
 #ifdef A4_HT_NO_VALUE
 static inline A4_ERRNO A4_HT_INSERT(A4_HT_NAME* ht, A4_HT_KEY key, size_t* idx);
-static inline A4_ERRNO A4_HT_INSERT_HINT_HASH(A4_HT_NAME* ht, A4_HT_KEY key, uint64_t hash, size_t* idx);
+static A4_ERRNO A4_HT_INSERT_HINT_HASH(A4_HT_NAME* ht, A4_HT_KEY key, uint64_t hash, size_t* idx);
 #else
 static inline A4_ERRNO A4_HT_INSERT(A4_HT_NAME* ht, A4_HT_KEY key, A4_HT_VALUE value, size_t* idx);
 static A4_ERRNO A4_HT_INSERT_HINT_HASH(A4_HT_NAME* ht, A4_HT_KEY key, uint64_t hash, A4_HT_VALUE value, size_t* idx);

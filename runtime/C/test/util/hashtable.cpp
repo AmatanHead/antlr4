@@ -43,27 +43,6 @@ extern "C" {
 #define A4_HT_KEY_EQ(a, b) ((a) == (b))
 #include <antlr4/util/hashtable.inl>
 
-#define A4_HT_NAME CoIntHt
-#define A4_HT_KEY Counted*
-#define A4_HT_VALUE uint32_t
-#define A4_HT_KEY_DTOR Counted_Delete
-#define A4_HT_KEY_MOVE DEFAULT_KEY_MOVE
-#define A4_HT_VALUE_NO_DTOR
-#define A4_HT_KEY_HASH(a) ((a)->x)
-#define A4_HT_KEY_EQ(a, b) (((a)->x) == ((b)->x))
-#include <antlr4/util/hashtable.inl>
-
-#define A4_HT_NAME CoCoHt
-#define A4_HT_KEY Counted*
-#define A4_HT_VALUE Counted*
-#define A4_HT_KEY_DTOR Counted_Delete
-#define A4_HT_KEY_MOVE DEFAULT_KEY_MOVE
-#define A4_HT_VALUE_DTOR Counted_Delete
-#define A4_HT_VALUE_MOVE DEFAULT_VALUE_MOVE
-#define A4_HT_KEY_HASH(a) ((a)->x)
-#define A4_HT_KEY_EQ(a, b) (((a)->x) == ((b)->x))
-#include <antlr4/util/hashtable.inl>
-
 #define A4_HT_NAME CoSet
 #define A4_HT_KEY Counted*
 #define A4_HT_KEY_DTOR Counted_Delete
@@ -105,6 +84,33 @@ extern "C" {
         canon.erase(k);                                                                                               \
     } while (false)
 #define HT_CLEAR(name)                                                                                                \
+    do {                                                                                                              \
+        name##_Clear(ht);                                                                                             \
+        canon.clear();                                                                                                \
+    } while (false)
+
+#define SET_INSERT(name, k)                                                                                           \
+    do {                                                                                                              \
+        ASSERT_EQ(name##_Insert(ht, make_k(k), &idx), A4_SUCCESS);                                                    \
+        canon.emplace(k);                                                                                             \
+    } while (false)
+#define SET_CHECK(name)                                                                                               \
+    do {                                                                                                              \
+        ASSERT_EQ(name##_Size(ht), canon.size());                                                                     \
+        ASSERT_EQ(name##_Empty(ht), canon.empty());                                                                   \
+        for (uint32_t k = 0; k < 100; ++k) {                                                                          \
+            ASSERT_EQ(name##_Contains(ht, make_k_placeholder(k)), canon.count(k));                                    \
+            if (!canon.count(k)) {                                                                                    \
+                ASSERT_EQ(name##_Remove(ht, make_k_placeholder(k)), A4_E_INDEX_ERROR);                                \
+            }                                                                                                         \
+        }                                                                                                             \
+    } while (false)
+#define SET_REMOVE(name, k)                                                                                           \
+    do {                                                                                                              \
+        ASSERT_EQ(name##_Remove(ht, make_k_placeholder(k)), A4_SUCCESS);                                              \
+        canon.erase(k);                                                                                               \
+    } while (false)
+#define SET_CLEAR(name)                                                                                               \
     do {                                                                                                              \
         name##_Clear(ht);                                                                                             \
         canon.clear();                                                                                                \
@@ -235,6 +241,129 @@ TEST(Hashtable, IntCoHt) {
     ASSERT_EQ(delete_calls, 6);
 
     IntCoHt_Delete(ht);
+
+    ASSERT_EQ(new_calls, 91);
+    ASSERT_EQ(delete_calls, 91);
+}
+
+TEST(Hashtable, IntSet) {
+    auto make_k = [](uint32_t k) { return k; };
+    auto make_k_placeholder = [](uint32_t k) { return k; };
+
+    IntSet* ht = IntSet_New();
+    std::set<uint32_t> canon;
+
+    size_t idx;
+
+    SET_CHECK(IntSet);
+
+    SET_INSERT(IntSet, 1);
+    SET_CHECK(IntSet);
+
+    SET_INSERT(IntSet, 5);
+    SET_CHECK(IntSet);
+
+    SET_INSERT(IntSet, 5);
+    SET_CHECK(IntSet);
+
+    SET_INSERT(IntSet, 6);
+    SET_CHECK(IntSet);
+
+    SET_REMOVE(IntSet, 5);
+    SET_CHECK(IntSet);
+
+    SET_REMOVE(IntSet, 6);
+    SET_CHECK(IntSet);
+
+    SET_CLEAR(IntSet);
+    SET_CHECK(IntSet);
+
+    SET_INSERT(IntSet, 5);
+    SET_CHECK(IntSet);
+
+    SET_INSERT(IntSet, 6);
+    SET_CHECK(IntSet);
+
+    for (uint32_t key = 5; key < 90; ++key) {
+        SET_INSERT(IntSet, key);
+        SET_CHECK(IntSet);
+    }
+
+    IntSet_Delete(ht);
+}
+
+TEST(Hashtable, CoSet) {
+    int new_calls = 0;
+    int delete_calls = 0;
+
+    Counted placeholder{&new_calls, &delete_calls, 0};
+
+    auto make_k = [&](uint32_t k) { return Counted_New({&new_calls, &delete_calls, k}); };
+    auto make_k_placeholder = [&](uint32_t k) { placeholder.x = k; return &placeholder; };
+
+    CoSet* ht = CoSet_New();
+    std::set<uint32_t> canon;
+
+    size_t idx;
+
+    SET_CHECK(CoSet);
+    ASSERT_EQ(new_calls, 0);
+    ASSERT_EQ(delete_calls, 0);
+
+    SET_INSERT(CoSet, 1);
+    SET_CHECK(CoSet);
+    ASSERT_EQ(new_calls, 1);
+    ASSERT_EQ(delete_calls, 0);
+
+    SET_INSERT(CoSet, 5);
+    SET_CHECK(CoSet);
+    ASSERT_EQ(new_calls, 2);
+    ASSERT_EQ(delete_calls, 0);
+
+    SET_INSERT(CoSet, 5);
+    SET_CHECK(CoSet);
+    ASSERT_EQ(new_calls, 3);
+    ASSERT_EQ(delete_calls, 1);
+
+    SET_INSERT(CoSet, 6);
+    SET_CHECK(CoSet);
+    ASSERT_EQ(new_calls, 4);
+    ASSERT_EQ(delete_calls, 1);
+
+    SET_REMOVE(CoSet, 5);
+    SET_CHECK(CoSet);
+    ASSERT_EQ(new_calls, 4);
+    ASSERT_EQ(delete_calls, 2);
+
+    SET_REMOVE(CoSet, 6);
+    SET_CHECK(CoSet);
+    ASSERT_EQ(new_calls, 4);
+    ASSERT_EQ(delete_calls, 3);
+
+    SET_CLEAR(CoSet);
+    SET_CHECK(CoSet);
+    ASSERT_EQ(new_calls, 4);
+    ASSERT_EQ(delete_calls, 4);
+
+    SET_INSERT(CoSet, 5);
+    SET_CHECK(CoSet);
+    ASSERT_EQ(new_calls, 5);
+    ASSERT_EQ(delete_calls, 4);
+
+    SET_INSERT(CoSet, 6);
+    SET_CHECK(CoSet);
+    ASSERT_EQ(new_calls, 6);
+    ASSERT_EQ(delete_calls, 4);
+
+    for (uint32_t key = 5; key < 90; ++key) {
+        SET_INSERT(CoSet, key);
+        SET_CHECK(CoSet);
+    }
+
+    ASSERT_EQ(new_calls, 91);
+    ASSERT_EQ(delete_calls, 6);
+
+    CoSet_Delete(ht);
 
     ASSERT_EQ(new_calls, 91);
     ASSERT_EQ(delete_calls, 91);
