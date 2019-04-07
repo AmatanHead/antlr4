@@ -1,8 +1,8 @@
 #ifndef INC_9888A0F95EF34AA891A58D31A75A2F51
 #define INC_9888A0F95EF34AA891A58D31A75A2F51
 
-#include "../common.h"
-#include "../memory/pool.h"
+#include <antlr4/common.h>
+#include <antlr4/memory/pool.h>
 
 #include <stdbool.h>
 #include <stdlib.h>

@@ -1,7 +1,7 @@
 #ifndef INC_83C7D418796D4E0F96097C06BCF78347
 #define INC_83C7D418796D4E0F96097C06BCF78347
 
-#include "../common.h"
+#include <antlr4/common.h>
 
 #include <stdalign.h>
 #include <stdbool.h>

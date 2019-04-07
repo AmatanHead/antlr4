@@ -1,7 +1,7 @@
 #ifndef INC_F634B7401B4F4349B21AFB80F68BFAE0
 #define INC_F634B7401B4F4349B21AFB80F68BFAE0
 
-#include "../common.h"
+#include <antlr4/common.h>
 
 struct A4_Lexer;
 

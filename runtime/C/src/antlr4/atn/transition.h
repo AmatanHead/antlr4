@@ -1,8 +1,8 @@
 #ifndef INC_4441CB085EC64BED92745F1AD45E93A1
 #define INC_4441CB085EC64BED92745F1AD45E93A1
 
-#include "../util/intset.h"
-#include "../common.h"
+#include <antlr4/util/intset.h>
+#include <antlr4/common.h>
 
 #include "fwd.h"
 

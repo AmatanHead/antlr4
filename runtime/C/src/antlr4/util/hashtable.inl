@@ -111,8 +111,8 @@
 #    define A4_HT_KEY_EQ(x, y) ((x) == (y))
 #endif
 
-#include "../common.h"
-#include "../memory/pool.h"
+#include <antlr4/common.h>
+#include <antlr4/memory/pool.h>
 
 #include <stddef.h>
 #include <memory.h>

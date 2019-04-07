@@ -55,8 +55,8 @@
 #    define A4_LIST_PAYLOAD_NODISCARD A4_NODISCARD
 #endif
 
-#include "../common.h"
-#include "../memory/pool.h"
+#include <antlr4/common.h>
+#include <antlr4/memory/pool.h>
 
 #include <stddef.h>
 

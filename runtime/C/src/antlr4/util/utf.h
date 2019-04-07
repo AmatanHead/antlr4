@@ -1,7 +1,7 @@
 #ifndef INC_DF058DE6D42A4F5392A0A1342F949CC6
 #define INC_DF058DE6D42A4F5392A0A1342F949CC6
 
-#include "../common.h"
+#include <antlr4/common.h>
 
 #define A4_UTF8_BROKEN_CHAR 0xFFFD
 

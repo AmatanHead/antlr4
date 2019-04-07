@@ -1,9 +1,9 @@
 #ifndef INC_929034E018364AA98B72E65E7B6FC478
 #define INC_929034E018364AA98B72E65E7B6FC478
 
-#include "../memory/pool.h"
-#include "../util/bitset.h"
-#include "../common.h"
+#include <antlr4/memory/pool.h>
+#include <antlr4/util/bitset.h>
+#include <antlr4/common.h>
 
 #include "fwd.h"
 

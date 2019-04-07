@@ -1,7 +1,7 @@
 #include "transition.h"
 #include "state.h"
 #include "atn.h"
-#include "../token.h"
+#include <antlr4/token.h>
 
 const char* A4_ATNTransitionTypeName(enum A4_ATNTransitionType type) {
     switch (type) {

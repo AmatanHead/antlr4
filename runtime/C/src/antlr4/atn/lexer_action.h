@@ -1,8 +1,8 @@
 #ifndef INC_DEFBCB5369044410A590B4936E16496E
 #define INC_DEFBCB5369044410A590B4936E16496E
 
-#include "../common.h"
-#include "../memory/pool.h"
+#include <antlr4/common.h>
+#include <antlr4/memory/pool.h>
 
 #include "fwd.h"
 

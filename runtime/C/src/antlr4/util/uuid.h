@@ -1,7 +1,7 @@
 #ifndef INC_670A4195A8764C62A8B3C6278F4C8BC4
 #define INC_670A4195A8764C62A8B3C6278F4C8BC4
 
-#include "../common.h"
+#include <antlr4/common.h>
 
 
 /**

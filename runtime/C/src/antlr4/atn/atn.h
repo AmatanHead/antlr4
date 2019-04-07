@@ -1,9 +1,9 @@
 #ifndef INC_7E2FEC60F9D947ACA2424326E9166128
 #define INC_7E2FEC60F9D947ACA2424326E9166128
 
-#include "../util/bitset.h"
-#include "../memory/pool.h"
-#include "../common.h"
+#include <antlr4/util/bitset.h>
+#include <antlr4/memory/pool.h>
+#include <antlr4/common.h>
 
 #include "fwd.h"
 

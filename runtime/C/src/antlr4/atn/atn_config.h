@@ -1,7 +1,7 @@
 #ifndef INC_E77A44258696476D899D53426759EB5D
 #define INC_E77A44258696476D899D53426759EB5D
 
-#include "../common.h"
+#include <antlr4/common.h>
 
 #include "state.h"
 

@@ -3,7 +3,7 @@
 #include "state.h"
 #include "transition.h"
 #include "lexer_action.h"
-#include "../util/uuid.h"
+#include <antlr4/util/uuid.h>
 
 #include <memory.h>
 
@@ -11,7 +11,7 @@
 #define A4_LIST_NAME ATNStateList
 #define A4_LIST_PAYLOAD A4_ATNState*
 #define A4_LIST_NO_DTOR
-#include "../util/list.inl"
+#include <antlr4/util/list.inl>
 
 a4_struct(LoopBackStateNumber) {
     A4_ATNLoopEndState* state;
@@ -20,7 +20,7 @@ a4_struct(LoopBackStateNumber) {
 #define A4_LIST_NAME LoopBackStateNumbersList
 #define A4_LIST_PAYLOAD LoopBackStateNumber
 #define A4_LIST_NO_DTOR
-#include "../util/list.inl"
+#include <antlr4/util/list.inl>
 
 a4_struct(EndStateNumber) {
     A4_ATNBlockStartStateBase* state;
@@ -29,17 +29,17 @@ a4_struct(EndStateNumber) {
 #define A4_LIST_NAME EndStateNumbersList
 #define A4_LIST_PAYLOAD EndStateNumber
 #define A4_LIST_NO_DTOR
-#include "../util/list.inl"
+#include <antlr4/util/list.inl>
 
 #define A4_LIST_NAME IntSetList
 #define A4_LIST_PAYLOAD A4_IntSet*
 #define A4_LIST_NO_DTOR
-#include "../util/list.inl"
+#include <antlr4/util/list.inl>
 
 #define A4_LIST_NAME TransitionList
 #define A4_LIST_PAYLOAD A4_ATNTransition*
 #define A4_LIST_NO_DTOR
-#include "../util/list.inl"
+#include <antlr4/util/list.inl>
 
 
 #define ERR(x) do { err = x; goto cleanup; } while (0)

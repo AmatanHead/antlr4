@@ -1,7 +1,7 @@
 #ifndef INC_5A6C601150D6478DB2E8854776F4CE43
 #define INC_5A6C601150D6478DB2E8854776F4CE43
 
-#include "../common.h"
+#include <antlr4/common.h>
 
 
 a4_struct(A4_DFAState) {
